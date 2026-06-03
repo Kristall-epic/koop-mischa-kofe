@@ -1,0 +1,80 @@
+-- name: [CS] Mischa Kofe
+-- description: Play as the funny russian guy! With a vast built from the ground up Moveset based on modern platformers like Robot 64/32, slap walls, kazotsky kick, spin in circles! Remember, baristas are very good at spinning, how else would they brew coffee?
+
+anims_mischa = {
+    [CHAR_ANIM_IDLE_HEAD_LEFT] = 'mischa_idle',
+    [CHAR_ANIM_IDLE_HEAD_RIGHT] = 'mischa_idle',
+    [CHAR_ANIM_IDLE_HEAD_CENTER] = 'mischa_idle',
+    [CHAR_ANIM_FIRST_PUNCH] = "mischa_slapidle",
+    [CHAR_ANIM_SECOND_PUNCH] = "mischa_slapmove",
+    [CHAR_ANIM_START_TWIRL] = "mischa_spin",
+    [CHAR_ANIM_BREAKDANCE] = "mischa_kazotsky"
+  }
+  
+local PALETTE_MISCHA = {
+  	[PANTS] = "b3b3b3", 
+  	[SHIRT] = "f73c2c", 
+  	[GLOVES] = "ffffff", 
+  	[SHOES] = "522f19", 
+  	[HAIR] = "321e1e", 
+  	[SKIN] = "ffdca8", 
+  	[CAP] = "f73c2c", 
+  	[EMBLEM] = "1c1c1c"
+}
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_MISCHA, "Mischa")
+
+local PALETTE_PURPLE = {
+  	[PANTS] = "33394d", 
+  	[SHIRT] = "9975d4", 
+  	[GLOVES] = "9975d4", 
+  	[SHOES] = "271c45", 
+  	[HAIR] = "090c09", 
+  	[SKIN] = "ffdca8", 
+  	[CAP] = "390e52", 
+  	[EMBLEM] = "916cca"
+}
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_PURPLE, "a")
+  
+local PALETTE_KINDNESS = {
+ 	  [PANTS] = "ff44ff", 
+  	[SHIRT] = "930090", 
+  	[GLOVES] = "ff99ff", 
+  	[SHOES] = "aa2c66", 
+  	[HAIR] = "f365da", 
+  	[SKIN] = "c86b9d", 
+  	[CAP] = "ef2bea", 
+  	[EMBLEM] = "ef2bea"
+}
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_KINDNESS, "Kind")
+
+charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
+
+function on_char_select_load()
+  
+CT_MISCHA = charSelect.character_add(
+        "Mischa Coffee",
+        {"COFFEE BREAK!!!!"},
+        "Kristall",
+        "ff0000", 
+        E_MODEL_MISCHA,
+        CT_MARIO, 
+        nil,
+        0.9
+    )
+    
+    voice_mischa = {
+      [SOUND_ACTION_READ_SIGN] = SOUND_BOUNCE_WALL
+      
+    }
+    
+    charSelect.character_add_voice(E_MODEL_MISCHA, voice_mischa)
+    
+    MISCHA_KOFECAM = charSelect.add_option("Camera of Mischa Kofe", 0, 1, {"Vanilla Cam", "Kofe Kamepa"}, true)
+    
+    charSelect.character_add_texture_replacement(CT_MISCHA, "texture_font_aliased", get_texture_info("font-red-guy"))
+    
+    moveset_mischa()
+    
+end
+
+hook_event(HOOK_ON_MODS_LOADED, on_char_select_load)
