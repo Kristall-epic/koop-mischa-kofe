@@ -74,6 +74,7 @@ MISCHA_TORNADO_TIMER = 0
 MISCHA_SPIN_DIR = 0
 MISCHA_PREV_SPIN_DIR = 0
 MISCHA_LAST_CIRCLING_DIR = 0
+MISCHA_TURNING_ANGLE = 0x0
 CONTROL_STICK_MAG = 0
 CONTROL_SPIN_DIFF = 0x0
 MISCHA_POS_X = 0
@@ -146,8 +147,10 @@ function update_variables(m)
   if m.playerIndex ~= 0 then
     return end
   local e = gMischaStates[0]
-  local diff = angle_diff(e.prevIntendedYaw, m.intendedYaw)
+  local diff = angle_diff(e.prevIntendedYaw, MISCHA_TURNING_ANGLE)
   local absDiff = math.abs(diff)
+
+  MISCHA_TURNING_ANGLE = approach_s16_asymptotic(MISCHA_TURNING_ANGLE, m.intendedYaw, 2)
   
   MISCHA_MOVEMENT = {
     x = m.pos.x - MISCHA_PREV_POS.x,
