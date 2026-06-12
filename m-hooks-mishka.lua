@@ -5,7 +5,14 @@ function mischa_update(m)
   
   if (m.action == ACT_MISCHA_WALK or m.action == ACT_IDLE or m.action == ACT_MISCHA_TORNADO) then 
   interact_w_door(m, e)
-   end
+  end
+ 
+ if (m.action & ACT_GROUP_MASK) == ACT_GROUP_MOVING then
+   local floorace = atan2s(m.floor.normal.z, m.floor.normal.x)
+   
+   m.vel.x = m.vel.x + (MISCHA_SLOPE_DECEL*(1 - m.floor.normal.y))*sins(floorace)
+   m.vel.z = m.vel.z + (MISCHA_SLOPE_DECEL*(1 - m.floor.normal.y))*coss(floorace)
+  end
   
   if (m.action == ACT_IDLE and m.controller.buttonDown & A_BUTTON ~= 0) then
     mischa_jump(m)
@@ -19,7 +26,7 @@ function mischa_update(m)
   set_override_fov(MISCHA_MIN_FOV + MISCHA_FOV)
   
   --easter egg
-  if gNetworkPlayers[0].currLevelNum == 16 and math.random(1, 40000) == 1 then
+  if gNetworkPlayers[0].currLevelNum == 16 and math.random(1, 4000000) == 1 then
     audio_stream_play(SOUND_THEME, false, 0.5)
   end
   
@@ -120,7 +127,7 @@ function on_death(m)
     warp_exit_level(30)
     m.numLives = 4
   end
-  m.health = 0x881
+  m.health = 0x920
   return false
 end
 

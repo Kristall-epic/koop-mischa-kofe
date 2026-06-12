@@ -1,11 +1,15 @@
-
-
 _G.ACT_MISCHA_WALK = allocate_mario_action(ACT_GROUP_MOVING | ACT_FLAG_MOVING)
 
 function act_mischa_walk(m)
   
   local step = perform_ground_step(m)
   m.vel.y = 0
+  
+  m.actionState = m.actionState + 1
+  
+  local bouncy = sins(m.actionState*(3800))
+  
+  m.marioObj.header.gfx.pos.y = m.pos.y + math.abs(bouncy)*(65) - 25
   
   if step == GROUND_STEP_LEFT_GROUND then
     MISCHA_COYOTE_TIMER = MISCHA_COYOTE_TIMER - 1
@@ -23,12 +27,11 @@ function act_mischa_walk(m)
               mario_throw_held_object(m)
               end
             else
-                set_mario_anim_with_accel(m, CHAR_ANIM_RUNNING, m.forwardVel*0x3000)
+                set_mario_anim_with_accel(m, CHAR_ANIM_RUNNING, 0x25000)
     end
     
   elseif step == GROUND_STEP_HIT_WALL then
     mario_set_forward_vel(m, approach_s32(m.forwardVel, 0, 5, 5))
-    set_mario_anim_with_accel(m, CHAR_ANIM_WALKING, m.forwardVel*0x1500)
     
   end
   
@@ -67,9 +70,6 @@ function act_mischa_walk(m)
       end
   
   local intended_spd = MISCHA_TOP_SPEED*CONTROL_STICK_MAG
-  if (m.input & INPUT_ABOVE_SLIDE ~= 0) then
-    intended_spd = intended_spd/2
-  end
   
   m.actionTimer = approach_s32(m.actionTimer, 0, 1, 1)
   
@@ -82,13 +82,15 @@ function act_mischa_walk(m)
   
   m.forwardVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
   
-  m.marioObj.header.gfx.angle.z = approach_s16_asymptotic(m.marioObj.header.gfx.angle.z, CONTROL_TURN_DIFF, MISCHA_TILT_SPEED)
+  m.marioObj.header.gfx.angle.z = m.floor.normal.z + approach_s16_asymptotic(m.marioObj.header.gfx.angle.z, CONTROL_TURN_DIFF, MISCHA_TILT_SPEED)
+  
+  m.marioObj.header.gfx.angle.x = m.floor.normal.x
   
   if (m.forwardVel < 20 and intended_spd > 30) then
     m.particleFlags = m.particleFlags | PARTICLE_DUST
   end
   
-  if (math.abs(CONTROL_TURN_DIFF) == 0x2000) then
+  if (math.abs(CONTROL_TURN_DIFF) > 0x2000) then
     play_sound(SOUND_MOVING_SLIDE_DOWN_POLE, m.pos)
   end
   
@@ -474,6 +476,12 @@ function act_mischa_kick(m)
   local step = perform_ground_step(m)
   
   set_mario_animation(m, CHAR_ANIM_BREAKDANCE)
+  
+  m.actionState = m.actionState + 1
+  
+   local bouncy = math.abs(sins(m.actionState*(11400/4)))
+  
+  m.marioObj.header.gfx.pos.y = m.pos.y + bouncy*(25) - 7
   
    m.marioBodyState.handState = MARIO_HAND_OPEN
   

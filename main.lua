@@ -1,14 +1,28 @@
 -- name: [CS] Mischa Kofe
 -- description: Play as the funny russian guy! With a vast built from the ground up Moveset based on modern platformers like Robot 64/32, slap walls, kazotsky kick, spin in circles! Remember, baristas are very good at spinning, how else would they brew coffee?
 
-anims_mischa = {
+function on_char_select_load()
+  
+CT_MISCHA = charSelect.character_add(
+        "Mischa Kofe",
+        {"COFFEE BREAK!!!!"},
+        "Kristall",
+        "ff0000", 
+        E_MODEL_MISCHA,
+        CT_MARIO, 
+        nil,
+        0.9
+    )
+    
+    anims_mischa = {
     [CHAR_ANIM_IDLE_HEAD_LEFT] = 'mischa_idle',
     [CHAR_ANIM_IDLE_HEAD_RIGHT] = 'mischa_idle',
     [CHAR_ANIM_IDLE_HEAD_CENTER] = 'mischa_idle',
     [CHAR_ANIM_FIRST_PUNCH] = "mischa_slapidle",
     [CHAR_ANIM_SECOND_PUNCH] = "mischa_slapmove",
     [CHAR_ANIM_START_TWIRL] = "mischa_spin",
-    [CHAR_ANIM_BREAKDANCE] = "mischa_kazotsky"
+    [CHAR_ANIM_BREAKDANCE] = "mischa_kazotsky",
+    [CHAR_ANIM_RUNNING] = "mischa-walk"
   }
   
 local PALETTE_MISCHA = {
@@ -33,7 +47,19 @@ local PALETTE_PURPLE = {
   	[CAP] = "390e52", 
   	[EMBLEM] = "916cca"
 }
-charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_PURPLE, "a")
+--charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_PURPLE, "a")
+
+local PALETTE_LUKYAN = {
+  	[PANTS] = "586359", 
+  	[SHIRT] = "3cf32c", 
+  	[GLOVES] = "ffffff", 
+  	[SHOES] = "528119", 
+  	[HAIR] = "000000", 
+  	[SKIN] = "ffdecc", 
+  	[CAP] = "3cf72c", 
+  	[EMBLEM] = "1c1c1c"
+}
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_LUKYAN, "Lukyan")
   
 local PALETTE_KINDNESS = {
  	  [PANTS] = "ff44ff", 
@@ -48,19 +74,6 @@ local PALETTE_KINDNESS = {
 charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_KINDNESS, "Kind")
 
 charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
-
-function on_char_select_load()
-  
-CT_MISCHA = charSelect.character_add(
-        "Mischa Coffee",
-        {"COFFEE BREAK!!!!"},
-        "Kristall",
-        "ff0000", 
-        E_MODEL_MISCHA,
-        CT_MARIO, 
-        nil,
-        0.9
-    )
     
     voice_mischa = {
       [SOUND_ACTION_READ_SIGN] = SOUND_BOUNCE_WALL
