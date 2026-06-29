@@ -1,0 +1,5 @@
+- he can hold airslap and stay too long in the air, he ain't peach, maybe only be allowed to air-slap once in the air unless you hit a wall
+
+-he can avoid touching the floor for too long while wall slapping along a single long wall, isn't he supposed to fall quickly from wallslapping the same wall
+
+-the player has to quickly move the joystick the opposite direction when transitioning from deep swimming to surface swimming to go forward, solution could be inverting vertical movement so holding up moves you up and when hitting surface you move forward
