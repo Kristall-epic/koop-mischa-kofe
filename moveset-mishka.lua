@@ -595,11 +595,13 @@ function act_mischa_slap_air(m)
     local curWallAngle = atan2s(m.wall.normal.z, m.wall.normal.x)
     local wallDiff = math.abs(curWallAngle - prevWallangle)
     MISCHA_PREV_WALL = m.wall
-
-    if (wallDiff < 0x6000) then
-      MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + 1
-    else
-      MISCHA_WALL_SLAPS = approach_s32(MISCHA_WALL_SLAPS, 1, 1, 1)
+    
+    if (m.playerIndex == 0) then
+        if (wallDiff < 0x6000) then
+          MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + 1
+        else
+          MISCHA_WALL_SLAPS = approach_s32(MISCHA_WALL_SLAPS, 1, 1, 1)
+        end
     end
     
     spawn_triangle_break_particles(16, 138, 2, 4)
@@ -651,6 +653,13 @@ function act_mischa_kart(m)
     m.vel.y = MISCHA_MOVEMENT.y
   end
   
+  if (math.abs(m.pos.y - m.floorHeight) < 25) then
+    if (m.controller.buttonPressed & B_BUTTON ~= 0) then
+      m.vel.y = m.vel.y + vel/2
+			audio_sample_play(SOUND_KART_HONK, m.pos, .25)
+    end
+  end
+  
   if (m.controller.buttonDown & A_BUTTON ~= 0) then
     m.forwardVel = lerp(m.forwardVel, KART_FORWARD_MAX/2, .01)
    
@@ -680,15 +689,23 @@ function act_mischa_kart(m)
     else
       m.vel.x = m.vel.x*.97
       m.vel.z = m.vel.z*.97
-       play_sound(SOUND_ACTION_METAL_JUMP, m.marioObj.header.gfx.cameraToObject)
+      -- play_sound(SOUND_ACTION_METAL_JUMP, m.marioObj.header.gfx.cameraToObject)
+	  audio_stream_play(SOUND_KART_BRAKE, false, .15)
       m.particleFlags = m.particleFlags | PARTICLE_FIRE
     end
   end
   
-  if (math.abs(m.faceAngle.y - inertiaDir) > 0x1500 and air == false) then
-      play_sound_with_freq_scale(SOUND_MOVING_LAVA_BURN, m.marioObj.header.gfx.cameraToObject, KART_FORWARD_MAX/vel)
-      m.particleFlags = m.particleFlags | PARTICLE_DIRT
-    end
+  if (m.controller.buttonReleased & Z_TRIG ~= 0) then
+	  audio_stream_stop(SOUND_KART_BRAKE)
+  end
+  
+  if (math.abs(m.faceAngle.y - inertiaDir) > 0x1500 and math.abs(m.pos.y - m.floorHeight) < 25 and vel > 10) then
+    --  play_sound_with_freq_scale(SOUND_MOVING_LAVA_BURN, m.marioObj.header.gfx.cameraToObject, KART_FORWARD_MAX/vel)
+	  audio_stream_play(SOUND_KART_DRIFT, false, .25)
+    m.particleFlags = m.particleFlags | PARTICLE_DIRT
+  else
+    audio_stream_stop(SOUND_KART_DRIFT)
+  end
 
   local turnMag = (vel/(KART_FORWARD_MAX))*(math.abs(m.controller.rawStickX)/127)
   
@@ -700,7 +717,9 @@ function act_mischa_kart(m)
     m.faceAngle.y = m.faceAngle.y - (KART_TURN_VEL*turnMag)
   end
   
-  play_sound_with_freq_scale(SOUND_MOVING_SHOCKED, m.marioObj.header.gfx.cameraToObject, math.max(vel/(KART_FORWARD_MAX/2), 20/KART_FORWARD_MAX))
+  --play_sound_with_freq_scale(SOUND_MOVING_SHOCKED, m.marioObj.header.gfx.cameraToObject, math.max(vel/(KART_FORWARD_MAX/2), 20/KART_FORWARD_MAX))
+  audio_stream_set_frequency(SOUND_KART_ENG, math.max(1 + vel/5, 2))
+  audio_stream_play(SOUND_KART_ENG, false, .1)
   
 end
 
