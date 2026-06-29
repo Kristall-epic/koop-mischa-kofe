@@ -9,6 +9,11 @@ SOUND_SPIN = audio_stream_load("mischa-tornado-loop.ogg")
 SOUND_RESTART = audio_stream_load("mischa-restart-level.ogg")
 SOUND_HEAVY_LAND = audio_sample_load("mischa-land-pound.ogg")
 SOUND_FEAR = audio_sample_load("mischa-near-bully.ogg")
+SOUND_KART_ENG = audio_stream_load("mischa-kart-eng.ogg")
+SOUND_KART_HONK = audio_sample_load("mischa-kart-honk.ogg")
+SOUND_KART_DRIFT = audio_stream_load("mischa-kart-drift.ogg")
+SOUND_KART_BRAKE = audio_stream_load("mischa-kart-brake.ogg")
+
 
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")
@@ -32,8 +37,8 @@ INTENDED_TORNADO_WIDTH = 0.075
 MISCHA_LEDGE_BOING = 0.15
 MISCHA_COYOTE = 3
 KART_FORWARD_MAX = 150
-KART_MISCHA_ACCEL = 2.75
-KART_TURN_VEL = 0x600
+KART_MISCHA_ACCEL = 1.75
+KART_TURN_VEL = KART_FORWARD_MAX*10.24
 KART_DECEL = .85
 MISCHA_GRAB_MAX_OBJECTS = 5
 MISCHA_GRAB_SPINATO = 0x1000
