@@ -69,6 +69,10 @@ function mischa_before_act(m, nextAct)
       end)
   end
   
+  if ((nextAct & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED and nextAct ~= ACT_MISCHA_SWIM and nextAct ~= ACT_DROWNING) then
+    return ACT_MISCHA_SWIM
+  end
+  
 end
 
 function mischa_physics(m, step)
