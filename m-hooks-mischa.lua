@@ -69,14 +69,6 @@ function mischa_before_act(m, nextAct)
       end)
   end
   
-  if ((nextAct & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED and nextAct ~= ACT_MISCHA_SWIM and nextAct ~= ACT_DROWNING) then
-    set_sound_bank_override(3)
-    djui_chat_message_create("hi")
-    return ACT_MISCHA_SWIM
-  else
-    set_sound_bank_override(-1)
-  end
-  
 end
 
 function mischa_physics(m, step)
