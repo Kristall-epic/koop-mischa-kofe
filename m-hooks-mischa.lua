@@ -7,7 +7,7 @@ function mischa_update(m)
   interact_w_door(m, e)
   end
  
- if (m.action & ACT_GROUP_MASK) == ACT_GROUP_MOVING then
+ if (m.action & ACT_GROUP_MASK) == ACT_GROUP_MOVING and (math.abs(m.pos.y - m.floorHeight) < 10) then
    local floorace = atan2s(m.floor.normal.z, m.floor.normal.x)
    
    m.vel.x = m.vel.x + (MISCHA_SLOPE_DECEL*(1 - m.floor.normal.y))*sins(floorace)
@@ -69,8 +69,13 @@ function mischa_before_act(m, nextAct)
       end)
   end
   
-  if ((nextAct & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED and nextAct ~= ACT_MISCHA_SWIM and nextAct ~= ACT_DROWNING) then
-    return ACT_MISCHA_SWIM
+  if ((nextAct & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED) then
+	  set_sound_bank_override(0x14)
+		if (nextAct ~= ACT_MISCHA_SWIM and nextAct ~= ACT_DROWNING) then
+      return ACT_MISCHA_SWIM
+		end
+	else
+    set_sound_bank_override(-1)
   end
   
 end
