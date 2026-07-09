@@ -65,7 +65,7 @@ function mischa_before_act(m, nextAct)
   
   if (nextAct == ACT_MISCHA_TORNADO) then
     if (m.action == ACT_MISCHA_TORNADO_AIR) then return end
-    local tornado = spawn_non_sync_object(id_bhvMischaTornado, E_MODEL_TWEESTER, m.pos.x, m.pos.y, m.pos.z, function(o)
+    local tornado = spawn_non_sync_object(id_bhvMischaTornado, E_MODEL_DL_WHIRLPOOL, m.pos.x, m.pos.y, m.pos.z, function(o)
       end)
   end
   
@@ -355,6 +355,47 @@ function playmode(playMode)
   end
 end
 
+cheats = {
+  [1] = "MASHINA",
+	[2] = "SAKHAR",
+	[3] = "SPUTNIK"
+}
+
+function mischa_cheatcodes(m, msg)
+  msg = string.upper(msg)
+	
+	if m.playerIndex == 0 then
+	
+	  if (msg == "MASHINA") then
+		  djui_popup_create("Cheat Code of Mischa: \nKart.", 2)
+			set_mario_action(m, ACT_MISCHA_KART, 0)
+	  end
+		
+		if (msg == "SAKHAR") then
+		  djui_popup_create("Cheat Code of Mischa: \nSugar Rush", 2)
+		  spawn_non_sync_object(id_bhvMario, E_MODEL_NONE, m.pos.x, m.pos.y, m.pos.z, function(o) o.oBehParams = m.marioObj.oBehParams end)
+		end
+		
+		if (msg == "SPUTNIK") then
+		
+			if (MISCHA_GRAVITY > 2) then
+			  djui_popup_create("Cheat Code of Mischa: \nMoon Gravity", 2)
+			  MISCHA_GRAVITY = 1
+			else
+			  djui_popup_create("Cheat Code of Mischa: \nEarth Gravity", 2)
+			  MISCHA_GRAVITY = 2.5
+			end
+			
+		end
+		
+	end
+	
+	for i, v in pairs(cheats) do
+	  if v == msg then return false end
+	end
+	
+end
+
 function moveset_mischa()
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_UPDATE, mischa_update)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_BEFORE_SET_MARIO_ACTION, mischa_before_act)
@@ -366,6 +407,7 @@ function moveset_mischa()
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_WARP, mischa_warp)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DEATH, on_death)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DIALOG, mischa_dialog)
+	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_CHAT_MESSAGE, mischa_cheatcodes)
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_MODS_LOADED, mischa_on_start)
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_PLAY_MODE_UPDATE, playmode)
   --hook_event(HOOK_ON_GEO_PROCESS, updateGeo)

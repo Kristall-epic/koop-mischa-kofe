@@ -78,7 +78,7 @@ function mischa_tornado_loop(o)
     end
   else
     o.header.gfx.scale.x = lerp(o.header.gfx.scale.x, INTENDED_TORNADO_WIDTH + .0175*#GRABBED_OBJ.o, 0.1)
-    o.header.gfx.scale.y = lerp(o.header.gfx.scale.y, 0.05 + .005*#GRABBED_OBJ.o, 0.1)
+    o.header.gfx.scale.y = lerp(o.header.gfx.scale.y, INTENDED_TORNADO_HEIGHT + .005*#GRABBED_OBJ.o, 0.1)
     o.header.gfx.scale.z = lerp(o.header.gfx.scale.z, INTENDED_TORNADO_WIDTH + .0175*#GRABBED_OBJ.o, 0.1) 
   end
   
