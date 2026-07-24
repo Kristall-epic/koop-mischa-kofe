@@ -82,11 +82,11 @@ function mischa_gravity(m)
 end
 
 function mischa_jump(m)
-  --local jumpAdd = (m.vel.y == 0 and MISCHA_MOVEMENT ~= 0) and (MISCHA_MOVEMENT.y + 5) or 0 
+  local jumpAdd = (MISCHA_MOVEMENT.y > 0) and (MISCHA_MOVEMENT.y) or 0 
   
       m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
       play_sound(SOUND_GENERAL_SWISH_AIR, m.marioObj.header.gfx.cameraToObject)
-      m.vel.y = MISCHA_JUMP_HEIGHT
+      m.vel.y = MISCHA_JUMP_HEIGHT + jumpAdd
       set_mario_action(m, ACT_MISCHA_JUMP, 0) 
 end
 

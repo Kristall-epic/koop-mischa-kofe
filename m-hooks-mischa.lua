@@ -71,11 +71,22 @@ function mischa_before_act(m, nextAct)
   
   if ((nextAct & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED) then
 	  set_sound_bank_override(0x14)
+		local seq = get_current_background_music()
+		
+		fadeout_background_music(seq, 240)
+		play_music(SEQ_PLAYER_LEVEL, seq, 240)
+		
 		if (nextAct ~= ACT_MISCHA_SWIM and nextAct ~= ACT_DROWNING) then
       return ACT_MISCHA_SWIM
 		end
 	else
-    set_sound_bank_override(-1)
+		if (m.action & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED then
+		  set_sound_bank_override(-1)
+		  local seq = get_current_background_music()
+		
+		  fadeout_background_music(seq, 240)
+		  play_music(SEQ_PLAYER_LEVEL, seq, 240)
+		end
   end
   
 end

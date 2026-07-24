@@ -32,11 +32,6 @@ function act_mischa_walk(m)
     
   elseif step == GROUND_STEP_HIT_WALL then
     mario_set_forward_vel(m, approach_s32(m.forwardVel, 0, 5, 5))
-    
-  end
-  
-  if (m.controller.buttonPressed & Y_BUTTON ~= 0) then
-    set_mario_action(m, ACT_MISCHA_KART, 0)
   end
   
   if m.controller.buttonDown & A_BUTTON ~= 0 and m.actionTimer == 0 then
