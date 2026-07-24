@@ -436,9 +436,8 @@ function mischa_interact(m, o, intType)
         end
       end
 			
-			end
-     end 
-   end
+    end
+     end
 		
 		o.oDialogResponse = 1
 end
