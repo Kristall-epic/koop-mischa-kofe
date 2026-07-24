@@ -13,7 +13,7 @@ function mischa_tornado_init(o)
 end
 
 function mischa_tornado_loop(o)
-  local m = gMarioStates[network_local_index_from_global(o.globalPlayerIndex)]
+  local m = gMarioStates[0]
   
   if (#GRABBED_OBJ.o < MISCHA_GRAB_MAX_OBJECTS) then
     for i = 0, id_bhv_max_count do 

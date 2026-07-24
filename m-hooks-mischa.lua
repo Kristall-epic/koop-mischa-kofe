@@ -34,7 +34,7 @@ function mischa_update(m)
   
   --He uses custom dialog system, hide vanilla one
   set_dialog_override_pos(-200, -200)
-  
+	
 end
 
 function mischa_before_act(m, nextAct)
@@ -63,8 +63,9 @@ function mischa_before_act(m, nextAct)
     camera_config_set_aggression(0)
   end
   
-  if (nextAct == ACT_MISCHA_TORNADO) then
-    if (m.action == ACT_MISCHA_TORNADO_AIR) then return end
+  if (nextAct == ACT_MISCHA_TORNADO or (nextAct == ACT_MISCHA_TORNADO_AIR and m.action ~= ACT_MISCHA_TORNADO)) then
+    if (m.action == ACT_MISCHA_TORNADO_AIR) or m.playerIndex ~= 0 then return end
+		
     local tornado = spawn_non_sync_object(id_bhvMischaTornado, E_MODEL_DL_WHIRLPOOL, m.pos.x, m.pos.y, m.pos.z, function(o)
       end)
   end
@@ -358,6 +359,11 @@ function mischa_dialog(id)
     curDialog = id
     DIALOGUE_OFFSET = 192
     MISCHA_DIALOG = true
+		obj = get_dialog_object()
+		
+		obj.oDialogResponse = 1
+		obj.oDialogState = 1
+		
 end
 
 function playmode(playMode)
@@ -407,9 +413,40 @@ function mischa_cheatcodes(m, msg)
 	
 end
 
+function mischa_interact(m, o, intType)
+  if intType & INTERACT_GRABBABLE ~= 0 then
+    if m.action == ACT_MISCHA_SLAP then
+      o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj) + 0x8000
+      o.oMoveAngleYaw = obj_angle_to_object(o, m.marioObj) + 0x8000
+      o.oPosY = m.pos.y + 50
+      o.oVelY = 35
+      o.oForwardVel = 25
+      m.forwardVel = -65
+      if obj_has_behavior_id(o, id_bhvKingBobomb) ~= 0 or obj_has_behavior_id(o, id_bhvChuckya) ~= 0 or obj_has_behavior_id(o, id_bhvPenguinBaby) ~= 0 then
+        o.oAction = 4
+      elseif obj_has_behavior_id(o, id_bhvBowser) ~= 0 and o.oAction ~= 1 then
+        o.oAction = 1
+        o.oForwardVel = 65
+      end
+      
+      if obj_has_behavior_id(o, id_bhvMips) ~= 0 then
+        m.input = m.input | INPUT_INTERACT_OBJ_GRABBABLE
+        if o.oSyncID ~= 0 then
+              network_send_object(o, true)
+        end
+      end
+			
+			end
+     end 
+   end
+		
+		o.oDialogResponse = 1
+end
+
 function moveset_mischa()
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_UPDATE, mischa_update)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_BEFORE_SET_MARIO_ACTION, mischa_before_act)
+	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_INTERACT, mischa_interact)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_BEFORE_PHYS_STEP, mischa_physics)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_UPDATE, updateCam)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_SCREEN_TRANSITION, on_transition)

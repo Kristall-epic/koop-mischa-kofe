@@ -144,12 +144,17 @@ function act_mischa_jump(m)
     mischa_lunge(m)
   end
   
-  if (m.controller.buttonDown & B_BUTTON ~= 0 and m.actionArg == 0 and m.actionTimer > 8) then
+  if (m.controller.buttonDown & Z_TRIG == 0 and m.controller.buttonDown & B_BUTTON ~= 0 and m.actionArg == 0 and m.actionTimer > 8) then
     m.vel.y = 15
     m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
     play_sound(SOUND_ACTION_UNSTUCK_FROM_GROUND, m.pos)
     set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
   end
+	
+	if (m.controller.buttonDown & Z_TRIG ~= 0 and m.controller.buttonPressed & B_BUTTON ~= 0) then
+	  m.vel.y = 10
+	  set_mario_action(m, ACT_MISCHA_GROUND_SLAP_AIR, 0)
+	end
   
   m.actionTimer = m.actionTimer + 1
   
@@ -388,6 +393,7 @@ function act_mischa_tornado(m)
     perform_air_step(m, 0)
     if MISCHA_COYOTE_TIMER < 1 then
         local timer = m.actionTimer
+				m.vel.y = MISCHA_MOVEMENT.y
       set_mario_action(m, ACT_MISCHA_TORNADO_AIR, 0)
       m.actionTimer = timer
     end
@@ -506,8 +512,14 @@ function act_mischa_tornado_air(m)
   
   local ang = (CONTROL_STICK_MAG > 0 and m.intendedYaw or atan2s(m.vel.z, m.vel.x))
   
-  local intendedX = (sins(ang) * (m.actionTimer/1.5))
-  local intendedZ = (coss(ang) * (m.actionTimer/1.5))
+	if (m.actionArg == 0) then
+    intendedX = (sins(ang) * (m.actionTimer/1.5))
+    intendedZ = (coss(ang) * (m.actionTimer/1.5))
+	else
+	  intendedX = (sins(ang) * (MISCHA_TOP_SPEED))*CONTROL_STICK_MAG
+    intendedZ = (coss(ang) * (MISCHA_TOP_SPEED))*CONTROL_STICK_MAG
+		m.actionTimer = 50
+	end
 
   m.vel.x = lerp(m.vel.x, intendedX, MISCHA_ACCEL_SLEERP/4)
   m.vel.z = lerp(m.vel.z, intendedZ, MISCHA_ACCEL_SLEERP/4)
@@ -541,10 +553,15 @@ function act_mischa_tornado_air(m)
   end
   
   if (m.controller.buttonPressed & B_BUTTON ~= 0) then
-    m.vel.y = 15
-    m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
-    play_sound(SOUND_ACTION_UNSTUCK_FROM_GROUND, m.pos)
-    set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
+	  if (m.controller.buttonDown & Z_TRIG ~= 0) then
+		  m.vel.y = 10
+			set_mario_action(m, ACT_MISCHA_GROUND_SLAP_AIR, 0)
+		else
+      m.vel.y = 15
+      m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
+      play_sound(SOUND_ACTION_UNSTUCK_FROM_GROUND, m.pos)
+      set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
+		end
   end
   
 end
@@ -788,3 +805,53 @@ function act_mischa_swim(m)
 end
 
 hook_mario_action(ACT_MISCHA_SWIM, act_mischa_swim)
+
+_G.ACT_MISCHA_GROUND_SLAP_AIR = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_ATTACKING | ACT_FLAG_AIR)
+
+function act_mischa_ground_slap_air(m)
+
+  step = perform_air_step(m, 0)
+	set_mario_animation(m, CHAR_ANIM_A_POSE)
+
+  if step == AIR_STEP_LANDED then
+	  set_mario_action(m, ACT_MISCHA_GROUND_SLAP_LAND, 0)
+		m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE | PARTICLE_HORIZONTAL_STAR
+		cur_obj_shake_screen(2)
+		spawn_triangle_break_particles(16, 138, 2, 4)
+	end
+	
+	m.vel.y = m.vel.y - .5
+	
+	local intendedX = (sins(m.intendedYaw) * MISCHA_TOP_SPEED/1.5)*CONTROL_STICK_MAG
+  local intendedZ = (coss(m.intendedYaw) * MISCHA_TOP_SPEED/1.5)*CONTROL_STICK_MAG
+  
+  m.vel.x = lerp(m.vel.x, intendedX, MISCHA_ACCEL_SLEERP/2)
+  m.vel.z = lerp(m.vel.z, intendedZ, MISCHA_ACCEL_SLEERP/2)
+  m.faceAngle.y = approach_s16_asymptotic(m.faceAngle.y, m.intendedYaw, 32)
+
+end
+
+hook_mario_action(ACT_MISCHA_GROUND_SLAP_AIR, {every_frame = act_mischa_ground_slap_air, gravity = mischa_gravity})
+
+_G.ACT_MISCHA_GROUND_SLAP_LAND = allocate_mario_action(ACT_GROUP_STATIONARY | ACT_FLAG_ATTACKING)
+
+function act_mischa_ground_slap_land(m)
+
+  m.vel.x = 0
+	m.vel.z = 0
+	m.pos.y = lerp(m.pos.y, m.floorHeight, .2)
+	m.marioObj.header.gfx.pos.y = m.pos.y
+	
+	if m.controller.buttonDown & A_BUTTON ~= 0 then
+	  m.vel.y = math.abs(m.vel.y)*.65
+		set_mario_action(m, ACT_MISCHA_TORNADO_AIR, 2)
+	end
+
+  if m.actionTimer > 10 then
+	  set_mario_action(m, ACT_MISCHA_WALK, 0)
+	end
+	
+  m.actionTimer = m.actionTimer + 1
+end
+
+hook_mario_action(ACT_MISCHA_GROUND_SLAP_LAND, act_mischa_ground_slap_land, INT_GROUND_POUND)
