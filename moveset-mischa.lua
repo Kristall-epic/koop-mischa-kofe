@@ -556,6 +556,7 @@ function act_mischa_tornado_air(m)
 	  if (m.controller.buttonDown & Z_TRIG ~= 0) then
 		  m.vel.y = 10
 			set_mario_action(m, ACT_MISCHA_GROUND_SLAP_AIR, 0)
+			m.faceAngle.y = m.intendedYaw
 		else
       m.vel.y = 15
       m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
@@ -811,7 +812,11 @@ _G.ACT_MISCHA_GROUND_SLAP_AIR = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_F
 function act_mischa_ground_slap_air(m)
 
   step = perform_air_step(m, 0)
-	set_mario_animation(m, CHAR_ANIM_A_POSE)
+	set_mario_anim_with_accel(m, CHAR_ANIM_START_GROUND_POUND, 0x17500)
+	
+	if m.marioObj.header.gfx.animInfo.animFrame > 25 then
+	  m.marioBodyState.handState = MARIO_HAND_OPEN
+	end
 
   if step == AIR_STEP_LANDED then
 	  set_mario_action(m, ACT_MISCHA_GROUND_SLAP_LAND, 0)

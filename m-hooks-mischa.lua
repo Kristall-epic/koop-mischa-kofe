@@ -346,6 +346,7 @@ end
 
 function mischa_warp()
   MISCHA_PREV_WALL = nil
+	GRABBED_OBJ.o = {}
   
 end
 

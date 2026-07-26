@@ -22,7 +22,8 @@ CT_MISCHA = charSelect.character_add(
     [CHAR_ANIM_SECOND_PUNCH] = "mischa_slapmove",
     [CHAR_ANIM_START_TWIRL] = "mischa_spin",
     [CHAR_ANIM_BREAKDANCE] = "mischa_kazotsky",
-    [CHAR_ANIM_RUNNING] = "mischa-walk"
+    [CHAR_ANIM_RUNNING] = "mischa-walk",
+		[CHAR_ANIM_START_GROUND_POUND] = "mischa-slap-pound"
   }
   
 local PALETTE_MISCHA = {
