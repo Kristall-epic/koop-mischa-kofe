@@ -33,7 +33,7 @@ function mischa_update(m)
   m.area.camera.yaw = cam.yaw
   
   --He uses custom dialog system, hide vanilla one
-  set_dialog_override_pos(-200, -200)
+  --set_dialog_override_pos(-200, -200)
 	
 end
 
@@ -71,16 +71,18 @@ function mischa_before_act(m, nextAct)
   end
   
   if ((nextAct & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED) then
+	--[[
 	  set_sound_bank_override(0x14)
 		local seq = get_current_background_music()
 		
 		fadeout_background_music(seq, 240)
 		play_music(SEQ_PLAYER_LEVEL, seq, 240)
-		
+		]]
 		if (nextAct ~= ACT_MISCHA_SWIM and nextAct ~= ACT_DROWNING) then
       return ACT_MISCHA_SWIM
 		end
 	else
+	--[[
 		if (m.action & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED then
 		  set_sound_bank_override(-1)
 		  local seq = get_current_background_music()
@@ -88,6 +90,7 @@ function mischa_before_act(m, nextAct)
 		  fadeout_background_music(seq, 240)
 		  play_music(SEQ_PLAYER_LEVEL, seq, 240)
 		end
+		]]
   end
   
 end
@@ -193,7 +196,7 @@ function mischa_hud()
   
   DIALOG_MARGIN_LEFT = djui_hud_get_screen_width()/2 - djui_hud_get_screen_width()/3
   DIALOG_WIDTH = djui_hud_get_screen_width()*(2/3)
-  
+  --[[
   if (not is_game_paused() and get_dialog_box_state() ~= 0 and MISCHA_DIALOG ~= true) then
     MISCHA_DIALOG = true
     curDialog = get_dialog_id()
@@ -207,6 +210,7 @@ function mischa_hud()
     curFocus = gLakituState.focus
     DIALOGUE_OFFSET = 192
   end
+	]]
   
   if (MISCHA_TRANSITION == true) then
     MISCHA_TRANSITION_CURTAIN_SCALE = lerp(MISCHA_TRANSITION_CURTAIN_SCALE, 1.25, .075)
@@ -439,8 +443,18 @@ function mischa_interact(m, o, intType)
 			
     end
      end
+end
+
+function mischa_metalcap(m)
+
+  if (m.flags & MARIO_METAL_CAP ~= 0) then
+	  m.vel.x = approach_f32(m.vel.x, 0, .5, .5)
+		m.vel.y = approach_f32(m.vel.y, 0, .5, .5)
+		m.vel.z = approach_f32(m.vel.z, 0, .5, .5)
 		
-		o.oDialogResponse = 1
+		return false
+	end
+
 end
 
 function moveset_mischa()
@@ -454,8 +468,9 @@ function moveset_mischa()
   charSelect.hook_on_character_change(on_mischa_select)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_WARP, mischa_warp)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DEATH, on_death)
-  charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DIALOG, mischa_dialog)
+  --charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DIALOG, mischa_dialog)
 	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_CHAT_MESSAGE, mischa_cheatcodes)
+	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ALLOW_FORCE_WATER_ACTION, mischa_metalcap)
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_MODS_LOADED, mischa_on_start)
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_PLAY_MODE_UPDATE, playmode)
   --hook_event(HOOK_ON_GEO_PROCESS, updateGeo)

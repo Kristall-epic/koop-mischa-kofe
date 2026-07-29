@@ -191,6 +191,12 @@ function act_mischa_lunge(m)
   else
     set_mario_anim_with_accel(m, CHAR_ANIM_FORWARD_SPINNING_FLIP, 0x15000)
   end
+	
+	if (m.flags & MARIO_WING_CAP ~= 0 and m.controller.buttonPressed & A_BUTTON ~= 0) then
+	  m.particleFlags = m.particleFlags & PARTICLE_MIST_CIRCLE
+	  set_mario_action(m, ACT_FLYING_TRIPLE_JUMP, 0)
+		m.vel.y = 0
+	end
   
   m.forwardVel = approach_s32(m.forwardVel, 0, MISCHA_LUNGE_DECEL, MISCHA_LUNGE_DECEL)
   
