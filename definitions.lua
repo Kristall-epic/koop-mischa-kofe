@@ -13,7 +13,8 @@ SOUND_KART_ENG = audio_stream_load("mischa-kart-eng.ogg")
 SOUND_KART_HONK = audio_sample_load("mischa-kart-honk.ogg")
 SOUND_KART_DRIFT = audio_stream_load("mischa-kart-drift.ogg")
 SOUND_KART_BRAKE = audio_stream_load("mischa-kart-brake.ogg")
-
+MISCHA_FANFARE = audio_stream_load("mischa-fanfare.ogg")
+SOUND_LEDGE_SLIP = audio_sample_load("mischa-slip.ogg")
 
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")

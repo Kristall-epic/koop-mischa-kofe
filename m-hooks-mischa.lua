@@ -14,7 +14,7 @@ function mischa_update(m)
 	  
 			local ledge = collision_find_surface_on_ray(m.pos.x + sins(movingDir)*(150), m.pos.y + 200, m.pos.z + coss(movingDir)*(150), 0, -150, 0)
 		  
-		  if ledge.surface and ledge.surface.normal.y > .9 then
+		  if ledge.surface and ledge.surface.normal.y > .9 and math.abs(m.pos.y - m.floorHeight) > 50 then
 				set_mario_action(m, ACT_MISCHA_LEDGE, 0)
 			  m.pos.y = ledge.hitPos.y - 75
 		  end
@@ -47,6 +47,10 @@ function mischa_update(m)
   if gNetworkPlayers[0].currLevelNum == 16 and math.random(1, 4000000) == 1 then
     audio_stream_play(SOUND_THEME, false, 0.5)
   end
+	
+	if m.action ~= ACT_MISCHA_LEDGE then
+	  audio_stream_stop(MISCHA_FANFARE)
+	end
   
   --He uses custom dialog system, hide vanilla one
   --set_dialog_override_pos(-200, -200)

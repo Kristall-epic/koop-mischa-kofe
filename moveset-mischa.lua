@@ -462,51 +462,66 @@ _G.ACT_MISCHA_LEDGE = allocate_mario_action(ACT_GROUP_AUTOMATIC)
 
 function act_mischa_ledge(m)
   
-  local step = perform_ground_step(m)
+  --local step = perform_ground_step(m)
 	
-	local wall = collision_find_surface_on_ray(m.pos.x, m.pos.y + 65, m.pos.z, sins(m.faceAngle.y)*250, 0, coss(m.faceAngle.y)*250, nil, "W")
+	set_mario_anim_with_accel(m, CHAR_ANIM_MOVE_ON_WIRE_NET_RIGHT + m.actionArg, 0)
+	
+	m.actionTimer = m.actionTimer + 1
+	
+	local wall = collision_find_surface_on_ray(m.pos.x, m.pos.y + 65, m.pos.z, sins(m.faceAngle.y)*250, 0, coss(m.faceAngle.y)*250)
 	
 	local wallsurface = wall.surface
 	local wallace
 	
 	stickMagX = (m.controller.rawStickX/127)
 	
-	m.vel.x = 0
-	m.vel.z = 0
-	m.forwardVel = stickMagX*90
+	if stickMagX ~= 0 then
+	  m.marioObj.header.gfx.animInfo.animFrame = m.marioObj.header.gfx.animInfo.animFrame + 1*math.abs(stickMagX)
+		
+		if is_anim_past_end(m) ~= 0 then
+		  m.actionArg = 1 - m.actionArg
+		end
+		
+	end
 	
-	velx = lerp(m.vel.x, sins(m.faceAngle.y - 0x4000)*m.forwardVel, .2)
-	velz = lerp(m.vel.z, coss(m.faceAngle.y - 0x4000)*m.forwardVel, .2)
+	m.forwardVel = stickMagX*35
+	
+	m.vel.x = lerp(m.vel.x, sins(m.faceAngle.y - 0x4000)*m.forwardVel, .1)
+	m.vel.z = lerp(m.vel.z, coss(m.faceAngle.y - 0x4000)*m.forwardVel, .1)
 	
 	if wall.surface then
 	  wallace = atan2s(wall.surface.normal.z, wall.surface.normal.x)
 		
-		m.pos.x = wall.hitPos.x - sins(m.faceAngle.y)*25 + velx
-		m.pos.z = wall.hitPos.z - coss(m.faceAngle.y)*25 + velz
+		m.pos.x = wall.hitPos.x - sins(m.faceAngle.y)*25 + m.vel.x
+		m.pos.z = wall.hitPos.z - coss(m.faceAngle.y)*25 + m.vel.z
 		
 		m.faceAngle.y = wallace + 0x8000
 	else
 	  set_mario_action(m, ACT_MISCHA_JUMP, 0)
+		audio_stream_stop(MISCHA_FANFARE)
+		audio_sample_play(SOUND_LEDGE_SLIP, m.pos, .35)
 		m.vel.y = 0
 	end
 	
-	local floor = collision_find_surface_on_ray(m.pos.x + sins(m.faceAngle.y)*50, m.pos.y + 150, m.pos.z + coss(m.faceAngle.y)*50, 0, -300, 0, nil, "F")
+	local floor = collision_find_surface_on_ray(m.pos.x + sins(m.faceAngle.y)*50, m.pos.y + 150, m.pos.z + coss(m.faceAngle.y)*50, 0, -300, 0)
   
 	if floor.surface then
 		m.pos.y = floor.hitPos.y - 75
 	else
 	  set_mario_action(m, ACT_MISCHA_JUMP, 0)
+		audio_stream_stop(MISCHA_FANFARE)
+		audio_sample_play(SOUND_LEDGE_SLIP, m.pos, .35)
 		m.vel.y = 0
 	end
 	
 	
-	local predictedwall = collision_find_surface_on_ray(m.pos.x + sins(m.faceAngle.y - 0x4000)*(35*stickMagX), m.pos.y + 45, m.pos.z + coss(m.faceAngle.y - 0x4000)*(35*stickMagX), sins(m.faceAngle.y)*250, 0, coss(m.faceAngle.y)*250, nil, "PW")
+	local predictedwall = collision_find_surface_on_ray((m.pos.x - sins(m.faceAngle.y)*25) + sins(m.faceAngle.y - 0x4000)*(35*stickMagX), m.pos.y + 50 + MISCHA_MOVEMENT.y, (m.pos.z - coss(m.faceAngle.y)*25) + coss(m.faceAngle.y - 0x4000)*(35*stickMagX), sins(m.faceAngle.y)*250, 0, coss(m.faceAngle.y)*250)
 	
-	if predictedWall and predictedWall.surface then
+	if predictedwall.surface then
 	  pwAngle = atan2s(predictedwall.surface.normal.z, predictedwall.surface.normal.x)
 	  
 	  if wallace ~= pwAngle then
-			djui_chat_message_create("found nearby wall")
+			djui_chat_message_create("normal.y: "..predictedwall.surface.normal.y.." yawdiff: "..angle_diff(wallace, pwAngle))
 		  m.pos.x = predictedwall.hitPos.x
 		  m.pos.z = predictedwall.hitPos.z
 		  m.faceAngle.y = pwAngle + 0x8000
@@ -516,15 +531,21 @@ function act_mischa_ledge(m)
 	
   if (m.controller.buttonDown & A_BUTTON ~= 0) then
       mischa_jump(m)
+			audio_stream_stop(MISCHA_FANFARE)
   end
 	
 	visPos = m.marioObj.header.gfx.pos
 	
-	visPos.x = lerp(visPos.x, m.pos.x, .2)
-	visPos.y = lerp(visPos.y, m.pos.y, .2)
-  visPos.z = lerp(visPos.z, m.pos.z, .2) 
+	visPos.x = lerp(visPos.x, m.pos.x, .5)
+	visPos.y = lerp(visPos.y, m.pos.y - 75, .5)
+  visPos.z = lerp(visPos.z, m.pos.z, .5) 
 	
 	m.marioObj.header.gfx.angle.y = approach_s16_asymptotic(m.marioObj.header.gfx.angle.y, m.faceAngle.y, 3)
+	
+	if m.playerIndex == 0 then
+	  MISCHA_FANFARE.frequency = lerp(MISCHA_FANFARE.frequency, math.max(math.abs(stickMagX), .25), .1)
+	  audio_stream_play(MISCHA_FANFARE, false, .35)
+	end
 	
 end
 
