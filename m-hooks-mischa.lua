@@ -6,6 +6,20 @@ function mischa_update(m)
   if (m.action == ACT_MISCHA_WALK or m.action == ACT_IDLE or m.action == ACT_MISCHA_TORNADO) then 
   interact_w_door(m, e)
   end
+	
+	if (m.action & ACT_GROUP_MASK) == ACT_GROUP_AIRBORNE then
+		if (m.action == ACT_MISCHA_JUMP and m.actionTimer > 5) or (m.action ~= ACT_MISCHA_JUMP) then
+			local movingDir = atan2s(m.vel.z, m.vel.x)
+		  local horizVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
+	  
+			local ledge = collision_find_surface_on_ray(m.pos.x + sins(movingDir)*(150), m.pos.y + 200, m.pos.z + coss(movingDir)*(150), 0, -150, 0)
+		  
+		  if ledge.surface and ledge.surface.normal.y > .9 then
+				set_mario_action(m, ACT_MISCHA_LEDGE, 0)
+			  m.pos.y = ledge.hitPos.y - 75
+		  end
+		end	
+	end
  
  if (m.action & ACT_GROUP_MASK) == ACT_GROUP_MOVING and (math.abs(m.pos.y - m.floorHeight) < 10) then
    local floorace = atan2s(m.floor.normal.z, m.floor.normal.x)
@@ -17,20 +31,22 @@ function mischa_update(m)
   if (m.action == ACT_IDLE and m.controller.buttonDown & A_BUTTON ~= 0) then
     mischa_jump(m)
   end
+	
+	if m.playerIndex ~= 0 then return end
+	
+	m.area.camera.yaw = cam.yaw
   
   --fov update
   MISCHA_GOAL_FOV = (math.sqrt(m.vel.x^2 + m.vel.y^2 + m.vel.z^2))
   
   MISCHA_FOV = math.lerp(MISCHA_FOV, math.min(MISCHA_GOAL_FOV, MISCHA_MAX_FOV), 0.1)
   
-  set_override_fov(MISCHA_MIN_FOV + MISCHA_FOV)
+  --set_override_fov(MISCHA_MIN_FOV + MISCHA_FOV)
   
   --easter egg
   if gNetworkPlayers[0].currLevelNum == 16 and math.random(1, 4000000) == 1 then
     audio_stream_play(SOUND_THEME, false, 0.5)
   end
-  
-  m.area.camera.yaw = cam.yaw
   
   --He uses custom dialog system, hide vanilla one
   --set_dialog_override_pos(-200, -200)
@@ -121,30 +137,34 @@ function mischa_physics(m, step)
 end
 
 function on_transition(t)
-  if (t == WARP_TRANSITION_FADE_INTO_CIRCLE or t == WARP_TRANSITION_FADE_INTO_STAR or t == WARP_TRANSITION_FADE_INTO_COLOR) then
-    MISCHA_TRANSITION = true
-    audio_stream_play(SOUND_WARP, false, 1)
-    return false
-  end
-  
-  if (t == WARP_TRANSITION_FADE_FROM_CIRCLE or t == WARP_TRANSITION_FADE_FROM_STAR or t == WARP_TRANSITION_FADE_FROM_COLOR) and MISCHA_TRANSITION == true then
-    MISCHA_TRANSITION = false
-    return false
-  end
+  if gNetworkPlayers[0] then
+    if (t == WARP_TRANSITION_FADE_INTO_CIRCLE or t == WARP_TRANSITION_FADE_INTO_STAR or t == WARP_TRANSITION_FADE_INTO_COLOR) then
+      MISCHA_TRANSITION = true
+      audio_stream_play(SOUND_WARP, false, 1)
+      return false
+    end
+    
+    if (t == WARP_TRANSITION_FADE_FROM_CIRCLE or t == WARP_TRANSITION_FADE_FROM_STAR or t == WARP_TRANSITION_FADE_FROM_COLOR) and MISCHA_TRANSITION == true then
+      MISCHA_TRANSITION = false
+      return false
+    end
+	end
 end
 
 function on_death(m)
-  MISCHA_TRANSITION = true
-  audio_stream_play(SOUND_RESTART, false, 1)
-  if (m.numLives > 0) then
-    m.numLives = m.numLives - 1
-    warp_restart_level()
-  else
-    warp_exit_level(30)
-    m.numLives = 4
-  end
-  m.health = 0x920
-  return false
+  if m.playerIndex == 0 then
+    MISCHA_TRANSITION = true
+    audio_stream_play(SOUND_RESTART, false, 1)
+    if (m.numLives > 0) then
+      m.numLives = m.numLives - 1
+      warp_restart_level()
+    else
+      warp_exit_level(30)
+      m.numLives = 4
+    end
+    m.health = 0x920
+    return false
+	end
 end
 
 scaleX = 1

@@ -463,15 +463,69 @@ _G.ACT_MISCHA_LEDGE = allocate_mario_action(ACT_GROUP_AUTOMATIC)
 function act_mischa_ledge(m)
   
   local step = perform_ground_step(m)
+	
+	local wall = collision_find_surface_on_ray(m.pos.x, m.pos.y + 65, m.pos.z, sins(m.faceAngle.y)*250, 0, coss(m.faceAngle.y)*250, nil, "W")
+	
+	local wallsurface = wall.surface
+	local wallace
+	
+	stickMagX = (m.controller.rawStickX/127)
+	
+	m.vel.x = 0
+	m.vel.z = 0
+	m.forwardVel = stickMagX*90
+	
+	velx = lerp(m.vel.x, sins(m.faceAngle.y - 0x4000)*m.forwardVel, .2)
+	velz = lerp(m.vel.z, coss(m.faceAngle.y - 0x4000)*m.forwardVel, .2)
+	
+	if wall.surface then
+	  wallace = atan2s(wall.surface.normal.z, wall.surface.normal.x)
+		
+		m.pos.x = wall.hitPos.x - sins(m.faceAngle.y)*25 + velx
+		m.pos.z = wall.hitPos.z - coss(m.faceAngle.y)*25 + velz
+		
+		m.faceAngle.y = wallace + 0x8000
+	else
+	  set_mario_action(m, ACT_MISCHA_JUMP, 0)
+		m.vel.y = 0
+	end
+	
+	local floor = collision_find_surface_on_ray(m.pos.x + sins(m.faceAngle.y)*50, m.pos.y + 150, m.pos.z + coss(m.faceAngle.y)*50, 0, -300, 0, nil, "F")
   
-  m.pos.x = lerp(m.pos.x, MISCHA_LEDGE_X, MISCHA_LEDGE_BOING)
-  m.pos.y = lerp(m.pos.y, MISCHA_LEDGE_Y, MISCHA_LEDGE_BOING)
-  m.pos.z = lerp(m.pos.z, MISCHA_LEDGE_Z, MISCHA_LEDGE_BOING)
-  
-  if (m.controller.buttonPressed & A_BUTTON ~= 0) then
+	if floor.surface then
+		m.pos.y = floor.hitPos.y - 75
+	else
+	  set_mario_action(m, ACT_MISCHA_JUMP, 0)
+		m.vel.y = 0
+	end
+	
+	
+	local predictedwall = collision_find_surface_on_ray(m.pos.x + sins(m.faceAngle.y - 0x4000)*(35*stickMagX), m.pos.y + 45, m.pos.z + coss(m.faceAngle.y - 0x4000)*(35*stickMagX), sins(m.faceAngle.y)*250, 0, coss(m.faceAngle.y)*250, nil, "PW")
+	
+	if predictedWall and predictedWall.surface then
+	  pwAngle = atan2s(predictedwall.surface.normal.z, predictedwall.surface.normal.x)
+	  
+	  if wallace ~= pwAngle then
+			djui_chat_message_create("found nearby wall")
+		  m.pos.x = predictedwall.hitPos.x
+		  m.pos.z = predictedwall.hitPos.z
+		  m.faceAngle.y = pwAngle + 0x8000
+	  end
+	end
+	
+	
+  if (m.controller.buttonDown & A_BUTTON ~= 0) then
       mischa_jump(m)
   end
-  
+	
+	visPos = m.marioObj.header.gfx.pos
+	
+	visPos.x = lerp(visPos.x, m.pos.x, .2)
+	visPos.y = lerp(visPos.y, m.pos.y, .2)
+  visPos.z = lerp(visPos.z, m.pos.z, .2) 
+	
+	m.marioObj.header.gfx.angle.y = approach_s16_asymptotic(m.marioObj.header.gfx.angle.y, m.faceAngle.y, 3)
+	
 end
 
 hook_mario_action(ACT_MISCHA_LEDGE, act_mischa_ledge)
@@ -655,8 +709,10 @@ function act_mischa_kart(m)
   else
     air = true
   end
+	
+	m.forwardVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
   
-  m.faceAngle.x = lerp(m.faceAngle.x, MISCHA_MOVEMENT.y*100, .1)
+  m.faceAngle.x = lerp(m.faceAngle.x, MISCHA_MOVEMENT.y*10, .1)
   
   set_mario_animation(m, CHAR_ANIM_START_SLEEP_SITTING)
   set_anim_to_frame(m, 24)
@@ -680,8 +736,6 @@ function act_mischa_kart(m)
   end
   
   if (m.controller.buttonDown & A_BUTTON ~= 0) then
-    m.forwardVel = lerp(m.forwardVel, KART_FORWARD_MAX/2, .01)
-   
     m.vel.x = m.vel.x + sins(m.faceAngle.y)*KART_MISCHA_ACCEL
     m.vel.z = m.vel.z + coss(m.faceAngle.y)*KART_MISCHA_ACCEL
     
@@ -729,17 +783,29 @@ function act_mischa_kart(m)
   local turnMag = (vel/(KART_FORWARD_MAX))*(math.abs(m.controller.rawStickX)/127)
   
   if (m.controller.rawStickX < -64) then
-    m.faceAngle.y = m.faceAngle.y + (KART_TURN_VEL*turnMag)
+    m.faceAngle.y = m.faceAngle.y + math.min((KART_TURN_VEL*turnMag), 0x2000)
   end
   
   if (m.controller.rawStickX > 64) then
-    m.faceAngle.y = m.faceAngle.y - (KART_TURN_VEL*turnMag)
+    m.faceAngle.y = m.faceAngle.y - math.max((KART_TURN_VEL*turnMag), -0x2000)
   end
   
   --play_sound_with_freq_scale(SOUND_MOVING_SHOCKED, m.marioObj.header.gfx.cameraToObject, math.max(vel/(KART_FORWARD_MAX/2), 20/KART_FORWARD_MAX))
   audio_stream_set_frequency(SOUND_KART_ENG, math.max(1 + vel/5, 2))
   audio_stream_play(SOUND_KART_ENG, false, .1)
-  
+	
+	if m.playerIndex == 0 then
+	  MISCHA_KART_DIST_DRIVEN = MISCHA_KART_DIST_DRIVEN + MOVING_VEL
+    
+	  m.actionTimer = m.actionTimer + 1
+	  
+	  if m.actionTimer > 30 then
+			m.actionTimer = 0
+		  mod_storage_save_number("MISCHA-DRIVE-DIST", MISCHA_KART_DIST_DRIVEN)
+	  end
+	end
+	
+	
 end
 
 hook_mario_action(ACT_MISCHA_KART, {every_frame = act_mischa_kart, gravity = mischa_gravity})

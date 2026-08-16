@@ -202,6 +202,15 @@ function render_mischa_hud()
     djui_hud_print_text(tostring("x "..m.numLives), mischaUI.lives.pos.x + 30, mischaUI.lives.pos.y - 4, .85)
     
   end
+	
+	if m.action == ACT_MISCHA_KART then
+	  local milesDriven = sm64units_to_miles(MISCHA_KART_DIST_DRIVEN)
+	  djui_hud_set_color(0, 0, 0, 255)
+    djui_hud_print_text("Miles: "..string.format("%0.2f", milesDriven), 15, djui_hud_get_screen_height() - 31, .56)
+		djui_hud_reset_color()
+		djui_hud_print_text("Miles: "..string.format("%0.2f", milesDriven), 16, djui_hud_get_screen_height() - 32, .55)
+	
+	end
   
 end
 
@@ -211,4 +220,10 @@ function double_tap(controller, button)
   else
     return 0
   end
+end
+
+function sm64units_to_miles(units)
+  local meters = units/100
+	local miles = meters*0.000621371
+  return miles
 end
