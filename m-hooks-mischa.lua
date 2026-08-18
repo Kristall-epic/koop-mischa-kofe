@@ -7,14 +7,14 @@ function mischa_update(m)
   interact_w_door(m, e)
   end
 	
-	if (m.action & ACT_GROUP_MASK) == ACT_GROUP_AIRBORNE then
+	if (m.action & ACT_GROUP_MASK) == ACT_GROUP_AIRBORNE and m.controller.buttonDown & Z_TRIG ~= 0 then
 		if (m.action == ACT_MISCHA_JUMP and m.actionTimer > 5) or (m.action ~= ACT_MISCHA_JUMP) then
 			local movingDir = atan2s(m.vel.z, m.vel.x)
 		  local horizVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
 	  
 			local ledge = collision_find_surface_on_ray(m.pos.x + sins(movingDir)*(150), m.pos.y + 200, m.pos.z + coss(movingDir)*(150), 0, -150, 0)
 		  
-		  if ledge.surface and ledge.surface.normal.y > .9 and math.abs(m.pos.y - m.floorHeight) > 50 then
+		  if ledge.surface and ledge.surface ~= m.floor and math.abs(m.pos.y - m.floorHeight) > 50 then
 				set_mario_action(m, ACT_MISCHA_LEDGE, 0)
 			  m.pos.y = ledge.hitPos.y - 75
 		  end
@@ -481,21 +481,30 @@ function mischa_metalcap(m)
 
 end
 
+function coyote_time_protect(m, class)
+  
+	if (m.action & ACT_GROUP_MASK) == ACT_GROUP_MOVING and MISCHA_COYOTE_TIMER > 0 then
+	  return SURFACE_DEFAULT
+	end
+
+end
+
 function moveset_mischa()
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_UPDATE, mischa_update)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_BEFORE_SET_MARIO_ACTION, mischa_before_act)
 	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_INTERACT, mischa_interact)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_BEFORE_PHYS_STEP, mischa_physics)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_UPDATE, updateCam)
-  charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_SCREEN_TRANSITION, on_transition)
+  --charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_SCREEN_TRANSITION, on_transition)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_HUD_RENDER_BEHIND, mischa_hud)
   charSelect.hook_on_character_change(on_mischa_select)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_WARP, mischa_warp)
-  charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DEATH, on_death)
+  --charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DEATH, on_death)
   --charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_DIALOG, mischa_dialog)
 	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_CHAT_MESSAGE, mischa_cheatcodes)
 	charSelect.character_hook_moveset(CT_MISCHA, HOOK_ALLOW_FORCE_WATER_ACTION, mischa_metalcap)
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_MODS_LOADED, mischa_on_start)
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_PLAY_MODE_UPDATE, playmode)
   --hook_event(HOOK_ON_GEO_PROCESS, updateGeo)
+	charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_OVERRIDE_FLOOR_CLASS, coyote_time_protect)
   end

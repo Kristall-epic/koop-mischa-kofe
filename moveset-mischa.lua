@@ -520,7 +520,7 @@ function act_mischa_ledge(m)
 	if predictedwall.surface then
 	  pwAngle = atan2s(predictedwall.surface.normal.z, predictedwall.surface.normal.x)
 	  
-	  if wallace ~= pwAngle then
+	  if math.abs(angle_diff(wallace, pwAngle)) > 0x500 then
 			djui_chat_message_create("normal.y: "..predictedwall.surface.normal.y.." yawdiff: "..angle_diff(wallace, pwAngle))
 		  m.pos.x = predictedwall.hitPos.x
 		  m.pos.z = predictedwall.hitPos.z
@@ -529,10 +529,14 @@ function act_mischa_ledge(m)
 	end
 	
 	
-  if (m.controller.buttonDown & A_BUTTON ~= 0) then
+  if (m.controller.buttonDown & A_BUTTON ~= 0 and m.actionTimer > 10) then
       mischa_jump(m)
 			audio_stream_stop(MISCHA_FANFARE)
   end
+	
+	if m.controller.buttonDown & Z_TRIG == 0 and m.actionTimer > 10 then
+	  set_mario_action(m, ACT_MISCHA_JUMP, 0)
+	end
 	
 	visPos = m.marioObj.header.gfx.pos
 	
