@@ -699,6 +699,7 @@ function act_mischa_slap_air(m)
           MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + 1
         else
           MISCHA_WALL_SLAPS = approach_s32(MISCHA_WALL_SLAPS, 1, 1, 1)
+					set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
         end
     end
     

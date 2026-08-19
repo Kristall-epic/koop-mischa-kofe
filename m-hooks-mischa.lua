@@ -9,10 +9,9 @@ function mischa_update(m)
 	
 	if (m.action & ACT_GROUP_MASK) == ACT_GROUP_AIRBORNE and m.controller.buttonDown & Z_TRIG ~= 0 then
 		if (m.action == ACT_MISCHA_JUMP and m.actionTimer > 5) or (m.action ~= ACT_MISCHA_JUMP) then
-			local movingDir = atan2s(m.vel.z, m.vel.x)
 		  local horizVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
 	  
-			local ledge = collision_find_surface_on_ray(m.pos.x + sins(movingDir)*(150), m.pos.y + 200, m.pos.z + coss(movingDir)*(150), 0, -150, 0)
+			local ledge = collision_find_surface_on_ray(m.pos.x + sins(m.intendedYaw)*(200), m.pos.y + 250, m.pos.z + coss(m.intendedYaw)*(200), 0, -200, 0)
 		  
 		  if ledge.surface and ledge.surface ~= m.floor and math.abs(m.pos.y - m.floorHeight) > 50 then
 				set_mario_action(m, ACT_MISCHA_LEDGE, 0)
