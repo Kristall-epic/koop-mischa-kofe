@@ -1,11 +1,11 @@
 -- name: [CS] Mischa Kofe
--- description: Play as the funny russian guy! With a vast built from the ground up Moveset based on modern platformers like Robot 64/32, slap walls, kazotsky kick, spin in circles! Remember, baristas are very good at spinning, how else would they brew coffee?
+-- description: KOFE BREAK!!!! Straight from 1998, Mischa Kofe is a character from the N64 Arcade-Platformer game "Kofe Break 64" which is about brewing as much coffee as possible under a time limit. His moveset is built from the ground up, which gives his moveset a more unique experience.
 
 function on_char_select_load()
   
 CT_MISCHA = charSelect.character_add(
         "Mischa Kofe",
-        {"COFFEE BREAK!!!!"},
+        {'KOFE BREAK!!!! Straight from 1998, Mischa Kofe is a character from the N64 Arcade-Platformer game "Kofe Break 64" which is about brewing as much coffee as possible under a time limit. His moveset is built from the ground up, which gives his moveset a more unique experience.'},
         "Kristall",
         "ff0000", 
         E_MODEL_MISCHA,

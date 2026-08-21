@@ -520,8 +520,8 @@ function act_mischa_ledge(m)
 	if predictedwall.surface then
 	  pwAngle = atan2s(predictedwall.surface.normal.z, predictedwall.surface.normal.x)
 	  
-	  if math.abs(angle_diff(wallace, pwAngle)) > 0x500 then
-			djui_chat_message_create("normal.y: "..predictedwall.surface.normal.y.." yawdiff: "..angle_diff(wallace, pwAngle))
+	  if wallace and pwAngle and math.abs(angle_diff(wallace, pwAngle)) > 0x500 then
+			--djui_chat_message_create("normal.y: "..predictedwall.surface.normal.y.." yawdiff: "..angle_diff(wallace, pwAngle))
 		  m.pos.x = predictedwall.hitPos.x
 		  m.pos.z = predictedwall.hitPos.z
 		  m.faceAngle.y = pwAngle + 0x8000

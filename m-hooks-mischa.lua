@@ -1,8 +1,26 @@
+
+--unfortunately has to be regular hook and not cs hook, if not the icon will not move while not playing as mischa (-500 cool points)
+function update_life_icon_anim()
+  MISCHA_LIVES_ANIM_TIMER = MISCHA_LIVES_ANIM_TIMER + 1
+  if (MISCHA_LIVES_ANIM_TIMER > 2) then
+    MISCHA_LIVES_ANIM_TIMER = 0
+    MISCHA_LIVES_ANIM = MISCHA_LIVES_ANIM + 1
+    if (MISCHA_LIVES_ANIM > 7) then
+      MISCHA_LIVES_ANIM = 0
+    end
+  end
+	
+	charSelect.character_edit(CT_MISCHA, nil, nil, nil, nil, nil, nil, get_cur_mischa_icon())
+	
+end
+
+hook_event(HOOK_UPDATE, update_life_icon_anim)
+
 function mischa_update(m)
   e = gMischaStates[0]
   l = gLakituState
   update_variables(m)
-  
+	
   if (m.action == ACT_MISCHA_WALK or m.action == ACT_IDLE or m.action == ACT_MISCHA_TORNADO) then 
   interact_w_door(m, e)
   end
@@ -32,7 +50,7 @@ function mischa_update(m)
   end
 	
 	if m.playerIndex ~= 0 then return end
-	
+  
 	m.area.camera.yaw = cam.yaw
   
   --fov update
@@ -506,4 +524,5 @@ function moveset_mischa()
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_PLAY_MODE_UPDATE, playmode)
   --hook_event(HOOK_ON_GEO_PROCESS, updateGeo)
 	charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_OVERRIDE_FLOOR_CLASS, coyote_time_protect)
-  end
+	
+	end

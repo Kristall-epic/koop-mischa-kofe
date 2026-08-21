@@ -186,15 +186,6 @@ function render_mischa_hud()
     mischaUI.lives.pos.x = djui_hud_get_screen_width() - 84
     mischaUI.lives.pos.y = djui_hud_get_screen_height() - 42
     
-    MISCHA_LIVES_ANIM_TIMER = MISCHA_LIVES_ANIM_TIMER + 1
-    if (MISCHA_LIVES_ANIM_TIMER > 2) then
-      MISCHA_LIVES_ANIM_TIMER = 0
-      MISCHA_LIVES_ANIM = MISCHA_LIVES_ANIM + 1
-      if (MISCHA_LIVES_ANIM > 7) then
-        MISCHA_LIVES_ANIM = 0
-      end
-    end
-    
     djui_hud_render_texture_tile(TEX_MISCHA_UI, mischaUI.lives.pos.x, mischaUI.lives.pos.y , MISCHA_UI_SCALE, MISCHA_UI_SCALE, 224, 32*MISCHA_LIVES_ANIM, 32, 32)
     djui_hud_set_color(0, 0, 0, 255)
     djui_hud_print_text(tostring("x "..m.numLives), mischaUI.lives.pos.x + 29, mischaUI.lives.pos.y - 5.5, .95)
@@ -226,4 +217,9 @@ function sm64units_to_miles(units)
   local meters = units/100
 	local miles = meters*0.000621371
   return miles
+end
+
+function get_cur_mischa_icon()
+	local icon = get_texture_info("mischa-icon"..MISCHA_LIVES_ANIM)
+	return icon
 end
