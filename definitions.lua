@@ -19,6 +19,14 @@ SOUND_LEDGE_SLIP = audio_sample_load("mischa-slip.ogg")
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")
 
+_G.MISCHA_ANIM_RUN = 800
+_G.MISCHA_ANIM_IDLE = 801
+_G.MISCHA_ANIM_SLAP_IDLE = 802
+_G.MISCHA_ANIM_SLAP_MOVE = 803
+_G.MISCHA_ANIM_TORNADO = 804
+_G.MISCHA_ANIM_KAZOTSKY = 805
+_G.MISCHA_ANIM_SLAP_POUND = 806
+
 --constants
 MISCHA_TOP_SPEED = 35
 MISCHA_TURN_SPEERP = 0.3

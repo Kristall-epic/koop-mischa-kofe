@@ -18,12 +18,14 @@ CT_MISCHA = charSelect.character_add(
     [CHAR_ANIM_IDLE_HEAD_LEFT] = 'mischa_idle',
     [CHAR_ANIM_IDLE_HEAD_RIGHT] = 'mischa_idle',
     [CHAR_ANIM_IDLE_HEAD_CENTER] = 'mischa_idle',
-    [CHAR_ANIM_FIRST_PUNCH] = "mischa_slapidle",
-    [CHAR_ANIM_SECOND_PUNCH] = "mischa_slapmove",
-    [CHAR_ANIM_START_TWIRL] = "mischa_spin",
-    [CHAR_ANIM_BREAKDANCE] = "mischa_kazotsky",
-    [CHAR_ANIM_RUNNING] = "mischa-walk",
-		[CHAR_ANIM_START_GROUND_POUND] = "mischa-slap-pound"
+		[MISCHA_ANIM_IDLE] = "mischa_idle",
+    [MISCHA_ANIM_SLAP_IDLE] = "mischa_slapidle",
+    [MISCHA_ANIM_SLAP_MOVE] = "mischa_slapmove",
+    [MISCHA_ANIM_TORNADO] = "mischa_spin",
+    [MISCHA_ANIM_KAZOTSKY] = "mischa_kazotsky",
+    [MISCHA_ANIM_RUN] = "mischa-walk",
+		[MISCHA_ANIM_SLAP_POUND] = "mischa-slap-pound",
+		[0xD2] = "mischa_kazotsky"
   }
   
 local PALETTE_MISCHA = {

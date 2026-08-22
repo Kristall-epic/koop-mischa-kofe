@@ -27,7 +27,7 @@ function act_mischa_walk(m)
               mario_throw_held_object(m)
               end
             else
-                set_mario_anim_with_accel(m, CHAR_ANIM_RUNNING, 0x25000)
+                set_mario_anim_with_accel(m, MISCHA_ANIM_RUN, 0x25000)
     end
     
   elseif step == GROUND_STEP_HIT_WALL then
@@ -217,14 +217,14 @@ function act_mischa_door(m)
   perform_ground_step(m)
   if m.actionTimer < 25 then
     mario_set_forward_vel(m, lerp(m.forwardVel, 0, 0.5))
-    set_mario_animation(m, CHAR_ANIM_IDLE_HEAD_CENTER)
+    set_mario_animation(m, MISCHA_ANIM_IDLE)
     m.faceAngle.y = approach_s16_asymptotic(m.faceAngle.y, doorAngle, MISCHA_TILT_SPEED)
     m.pos.x = lerp(m.pos.x, doorPosX, 0.2)
       m.pos.z = lerp(m.pos.z, doorPosZ, 0.2)
   elseif
     m.actionTimer < 35 and m.actionTimer > 20 then
       mario_set_forward_vel(m, lerp(m.forwardVel, 35, 0.2))
-      set_mario_anim_with_accel(m, CHAR_ANIM_RUNNING, m.forwardVel*0x4000)
+      set_mario_anim_with_accel(m, MISCHA_ANIM_RUN, 0x25000)
     elseif m.actionTimer > 35 then
       return set_mario_action(m, ACT_MISCHA_WALK, 0)
     end
@@ -308,7 +308,7 @@ function act_mischa_tornado(m)
   step = perform_ground_step(m)
   
   m.faceAngle.y = 0x4000
-  set_mario_anim_with_accel(m, CHAR_ANIM_START_TWIRL, 0x17500)
+  set_mario_anim_with_accel(m, MISCHA_ANIM_TORNADO, 0x17500)
   m.particleFlags = m.particleFlags | PARTICLE_DUST
   play_sound_with_freq_scale(SOUND_MOVING_FLYING, m.marioObj.header.gfx.cameraToObject, m.actionTimer/100 + 0.35)
   
@@ -416,9 +416,9 @@ function act_mischa_slap(m)
   step = perform_ground_step(m)
   
   if (m.forwardVel ~= 0) then
-  set_mario_anim_with_accel(m, CHAR_ANIM_SECOND_PUNCH, 0x60000)
+  set_mario_anim_with_accel(m, MISCHA_ANIM_SLAP_MOVE, 0x60000)
     else
-  set_mario_animation(m, CHAR_ANIM_FIRST_PUNCH)
+  set_mario_animation(m, MISCHA_ANIM_SLAP_IDLE)
   end
   m.marioBodyState.handState = MARIO_HAND_RIGHT_OPEN
   
@@ -561,7 +561,7 @@ function act_mischa_kick(m)
   
   local step = perform_ground_step(m)
   
-  set_mario_animation(m, CHAR_ANIM_BREAKDANCE)
+  set_mario_animation(m, MISCHA_ANIM_KAZOTSKY)
   
   m.actionState = m.actionState + 1
   
@@ -610,7 +610,7 @@ function act_mischa_tornado_air(m)
   m.vel.z = lerp(m.vel.z, intendedZ, MISCHA_ACCEL_SLEERP/4)
   
   m.faceAngle.y = 0x4000
-  set_mario_anim_with_accel(m, CHAR_ANIM_START_TWIRL, 0x17500)
+  set_mario_anim_with_accel(m, MISCHA_ANIM_TORNADO, 0x17500)
   m.particleFlags = m.particleFlags | PARTICLE_DUST
   play_sound_with_freq_scale(SOUND_MOVING_FLYING, m.marioObj.header.gfx.cameraToObject, m.actionTimer/100 + 0.35)
   
@@ -669,7 +669,7 @@ function act_mischa_slap_air(m)
    
    m.actionTimer = m.actionTimer + 1
   
-  set_mario_animation(m, CHAR_ANIM_FIRST_PUNCH)
+  set_mario_animation(m, MISCHA_ANIM_SLAP_IDLE)
   
    m.marioBodyState.handState = MARIO_HAND_RIGHT_OPEN
   
@@ -910,7 +910,7 @@ _G.ACT_MISCHA_GROUND_SLAP_AIR = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_F
 function act_mischa_ground_slap_air(m)
 
   step = perform_air_step(m, 0)
-	set_mario_anim_with_accel(m, CHAR_ANIM_START_GROUND_POUND, 0x17500)
+	set_mario_anim_with_accel(m, MISCHA_ANIM_SLAP_POUND, 0x17500)
 	
 	if m.marioObj.header.gfx.animInfo.animFrame > 25 then
 	  m.marioBodyState.handState = MARIO_HAND_OPEN
