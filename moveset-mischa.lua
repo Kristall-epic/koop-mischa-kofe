@@ -342,7 +342,7 @@ function act_mischa_tornado(m)
   
   if (m.wall ~= nil) then
     spawn_triangle_break_particles(16, 138, 3, 4)
-    audio_sample_play(SOUND_BOUNCE_WALL, m.pos, 1)
+    audio_sample_play(SOUND_BOUNCE_WALL, m.pos, .25)
     local wallAngle = atan2s(m.wall.normal.z, m.wall.normal.x)
     m.vel.x = m.vel.x + sins(wallAngle) * 100
     m.vel.z = m.vel.z + coss(wallAngle) * 100
@@ -631,7 +631,7 @@ function act_mischa_tornado_air(m)
   
   if (m.wall) then
     spawn_triangle_break_particles(16, 138, 3, 4)
-    audio_sample_play(SOUND_BOUNCE_WALL, m.pos, 1)
+    audio_sample_play(SOUND_BOUNCE_WALL, m.pos, .25)
     local wallAngle = atan2s(m.wall.normal.z, m.wall.normal.x)
     m.vel.x = m.vel.x + sins(wallAngle) * 100
     m.vel.z = m.vel.z + coss(wallAngle) * 100
