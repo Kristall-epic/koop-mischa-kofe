@@ -890,7 +890,7 @@ function act_mischa_swim(m)
     
     m.faceAngle.y = m.faceAngle.y + (m.controller.rawStickX/-127)*0x250
     if (math.abs(m.faceAngle.x) < 0x3000) then
-      m.faceAngle.x = m.faceAngle.x + (m.controller.rawStickY/-127)*0x250
+      m.faceAngle.x = m.faceAngle.x + (m.controller.rawStickY/127)*0x250
     else
       m.faceAngle.x = approach_s16_asymptotic(m.faceAngle.x, 1, 32)
     end
