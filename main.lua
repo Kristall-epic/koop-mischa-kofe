@@ -7,7 +7,7 @@ CT_MISCHA = charSelect.character_add(
         "Mischa Kofe",
         {'KOFE BREAK!!!! Straight from 1998, Mischa Kofe is a character from the N64 Arcade-Platformer game "Kofe Break 64" which is about brewing as much coffee as possible under a time limit. His moveset is built from the ground up, which gives his moveset a more unique experience.'},
         "Kristall",
-        "ff0000", 
+        "aa0000", 
         E_MODEL_MISCHA,
         CT_MARIO, 
         nil,
@@ -89,6 +89,8 @@ charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
     
     charSelect.character_add_texture_replacement(CT_MISCHA, "texture_font_aliased", get_texture_info("font-red-guy"))
     
+		charSelect.character_add_menu_instrumental(CT_MISCHA, SOUND_THEME)
+		
     moveset_mischa()
     
 end
