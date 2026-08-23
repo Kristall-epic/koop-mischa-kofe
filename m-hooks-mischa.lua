@@ -11,7 +11,6 @@ function update_life_icon_anim()
   end
 	
 	charSelect.character_edit(CT_MISCHA, nil, nil, nil, nil, nil, nil, get_cur_mischa_icon())
-	
 end
 
 hook_event(HOOK_UPDATE, update_life_icon_anim)
