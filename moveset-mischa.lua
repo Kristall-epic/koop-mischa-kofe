@@ -475,6 +475,8 @@ function act_mischa_ledge(m)
 	
 	stickMagX = (m.controller.rawStickX/127)
 	
+	m.marioObj.header.gfx.angle.z = approach_s16_asymptotic(m.marioObj.header.gfx.angle.z, 0x1000*stickMagX, 8)
+	
 	if stickMagX ~= 0 then
 	  m.marioObj.header.gfx.animInfo.animFrame = m.marioObj.header.gfx.animInfo.animFrame + 1*math.abs(stickMagX)
 		

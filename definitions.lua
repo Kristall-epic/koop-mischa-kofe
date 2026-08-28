@@ -91,7 +91,10 @@ mischaUI = {
 MISCHA_TORNADO_TIMER = 0
 MISCHA_SPIN_DIR = 0
 MISCHA_PREV_SPIN_DIR = 0
+TORNADO_OBJ_SPIN_DIR = 1
 MISCHA_LAST_CIRCLING_DIR = 0
+TORNADO_GRAB_SPIN_TIMER = 0
+TORNADO_GRAB_SPIN_ACCEL = 1
 MISCHA_TURNING_ANGLE = 0x0
 CONTROL_STICK_MAG = 0
 CONTROL_SPIN_DIFF = 0x0
@@ -185,9 +188,16 @@ function update_variables(m)
   }
   
   MISCHA_PREV_SPIN_DIR = MISCHA_SPIN_DIR
+	
+	if MISCHA_SPIN_DIR ~= 0 then
+	  TORNADO_OBJ_SPIN_DIR = MISCHA_SPIN_DIR
+	end
+	
   CONTROL_STICK_MAG = (m.controller.stickMag)/64
   CONTROL_TURN_DIFF = m.marioObj.header.gfx.angle.y - m.intendedYaw
   
+	--djui_chat_message_create(tostring(TORNADO_OBJ_SPIN_DIR))
+	
   for num, button in pairs(CUR_PRESSED) do
     if (button > 0) then
       CUR_PRESSED[num] = CUR_PRESSED[num] - 1

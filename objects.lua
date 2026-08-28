@@ -29,16 +29,20 @@ function mischa_tornado_loop(o)
       end
     end
   end
-  
+	
+	TORNADO_GRAB_SPIN_ACCEL = lerp(TORNADO_GRAB_SPIN_ACCEL, TORNADO_OBJ_SPIN_DIR, .3)
+	
+	TORNADO_GRAB_SPIN_TIMER = TORNADO_GRAB_SPIN_TIMER + TORNADO_GRAB_SPIN_ACCEL
+	
     
     for c = 1, MISCHA_GRAB_MAX_OBJECTS do
       local obj = GRABBED_OBJ.o[c]
       if obj then
         
         GRABBED_OBJ.goalPos = {
-          x = o.oPosX + (sins(get_global_timer()*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(100 + 25*#GRABBED_OBJ.o)),
+          x = o.oPosX + (sins(TORNADO_GRAB_SPIN_TIMER*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(100 + 25*#GRABBED_OBJ.o)),
           y = o.oPosY + 110 + math.random(-100, 25*#GRABBED_OBJ.o),
-          z = o.oPosZ + (coss(get_global_timer()*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(100 + 25*#GRABBED_OBJ.o))
+          z = o.oPosZ + (coss(TORNADO_GRAB_SPIN_TIMER*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(100 + 25*#GRABBED_OBJ.o))
         }
         
         obj.oVelY = 0
