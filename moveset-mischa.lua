@@ -306,6 +306,37 @@ function act_mischa_tornado(m)
   local e = gMischaStates[0]
   
   step = perform_ground_step(m)
+	
+	if m.actionState == TORNADO_STATE_BOWSER then
+	  local o = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvBowser)
+		
+		m.actionTimer = approach_s32(m.actionTimer, 0, 2, 2)
+		m.vel.x = m.vel.x * .6
+		m.vel.z = m.vel.z * .6
+		m.actionArg = 0
+		m.invincTimer = 1
+		o.oAction = 1
+		
+		if m.controller.buttonDown & B_BUTTON ~= 0 then
+		  local fov = lerp(get_current_fov(), 30, .1)
+			
+			set_override_fov(fov)
+		end
+		
+		if m.controller.buttonReleased & B_BUTTON ~= 0 then
+			
+			for c, obj in pairs(GRABBED_OBJ.o) do
+			  if obj == o then
+				  set_override_fov(0)
+				  table.remove(GRABBED_OBJ.o, c)
+					m.actionState = TORNADO_STATE_REGULAR
+					o.oForwardVel = 40 + m.actionTimer
+					o.oVelY = 30 + m.actionTimer*.75
+				end
+			end
+		end
+		
+	end
   
   m.faceAngle.y = 0x4000
   set_mario_anim_with_accel(m, MISCHA_ANIM_TORNADO, 0x17500)
@@ -362,7 +393,7 @@ function act_mischa_tornado(m)
     m.actionArg = 1
   end
   
-  if (m.controller.buttonDown & A_BUTTON ~= 0) then
+  if (m.controller.buttonDown & A_BUTTON ~= 0) and (m.actionState ~= TORNADO_STATE_BOWSER) then
         m.particleFlags = m.particleFlags | PARTICLE_FIRE
         play_sound_with_freq_scale(SOUND_MOVING_SLIDE_DOWN_TREE, m.pos, m.forwardVel/10)
         m.actionTimer = m.actionTimer - .5
@@ -370,7 +401,7 @@ function act_mischa_tornado(m)
     m.actionTimer = m.actionTimer - MISCHA_TORNADO_ADD
     end
 
-  if (m.controller.buttonReleased & A_BUTTON ~= 0) then
+  if (m.controller.buttonReleased & A_BUTTON ~= 0) and (m.actionState ~= TORNADO_STATE_BOWSER) then
     m.forwardVel = m.forwardVel/1.5
     m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
     m.vel.y = 45 + 40/(math.max(m.forwardVel, 5))
@@ -740,11 +771,13 @@ function act_mischa_kart(m)
 	
 	m.forwardVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
   
-  m.faceAngle.x = lerp(m.faceAngle.x, MISCHA_MOVEMENT.y*10, .1)
+  m.marioObj.header.gfx.angle.x = approach_s16_asymptotic(m.marioObj.header.gfx.angle.x, math.clamp(MISCHA_MOVEMENT.y*-0x200, -0x8000, 0x8000), 8)
+	
+  set_mario_animation(m, MISCHA_ANIM_KAZOTSKY)
+  set_anim_to_frame(m, (m.controller.rawStickX/127)*5 + 5)
   
-  set_mario_animation(m, CHAR_ANIM_START_SLEEP_SITTING)
-  set_anim_to_frame(m, 24)
-  
+	m.marioObj.header.gfx.angle.z = approach_s16_asymptotic(m.marioObj.header.gfx.angle.z, (m.controller.rawStickX/127)*0x4000, 8)
+	
   if (m.wall) then
     local wallace = atan2s(m.wall.normal.z, m.wall.normal.x)
     

@@ -51,6 +51,7 @@ KART_MISCHA_ACCEL = 2
 KART_TURN_VEL = KART_FORWARD_MAX*10.24
 KART_DECEL = .85
 MISCHA_GRAB_MAX_OBJECTS = 5
+TORNADO_GRABBED_DIST = 100
 MISCHA_GRAB_SPINATO = 0x1000
 MISCHA_GRAB_OBJECT_SLEERP = .5
 MISCHA_TORNADO_GRABBABLES = {
@@ -64,6 +65,8 @@ MISCHA_SWIM_STATE_SUBMERGED = 0
 MISCHA_SWIM_STATE_SURFACE = 1
 MISCHA_UI_SCALE = .75
 MISCHA_TORNADO_MIN_ROTATE = 0x250
+TORNADO_STATE_BOWSER = 1
+TORNADO_STATE_REGULAR = 0
 
 mischaUI = {
   scl = MISCHA_UI_SCALE,
@@ -237,4 +240,9 @@ end
   
   MOVING_VEL = math.sqrt(MISCHA_MOVEMENT.x^2 + MISCHA_MOVEMENT.y^2 + MISCHA_MOVEMENT.z^2)
   
+	if obj_count_objects_with_behavior_id(id_bhvTuxiesMother) > 0 then
+	 local mom = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvTuxiesMother) 
+		djui_chat_message_create(tostring(mom.oDialogState.." response:"..mom.oDialogResponse))
+	end
+	
 end

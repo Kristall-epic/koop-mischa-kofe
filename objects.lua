@@ -1,6 +1,17 @@
 ACT_TORNADO_SPIN = 1
 ACT_TORNADO_DISAPPEAR = 2
 
+BOWSER_DEBUG = F3.allocate_debug_info()
+
+hook_event(HOOK_UPDATE, function()
+  m = gMarioStates[0]
+  local bowser = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvBowser)
+	
+	if bowser then
+	  F3.update_debug_info(BOWSER_DEBUG, "act: "..bowser.oAction)
+	end
+end)
+
 function mischa_tornado_init(o)
   o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
   o.header.gfx.skipInViewCheck = true
@@ -25,6 +36,24 @@ function mischa_tornado_loop(o)
         if dist < (250 + 25*#GRABBED_OBJ.o) and obj_is_not_tornado_grabbed(object) == true and (m.action == ACT_MISCHA_TORNADO or m.action == ACT_MISCHA_TORNADO_AIR) then
           audio_sample_play(SOUND_GRAB, m.pos, 1)
           table.insert(GRABBED_OBJ.o, object)
+					
+					if get_id_from_behavior(object.behavior) == id_bhvBowser then
+					  djui_chat_message_create("luigi look, it's from bowser!")
+						m.actionState = TORNADO_STATE_BOWSER
+						m.interactObj = object
+						m.input = m.input | INPUT_INTERACT_OBJ_GRABBABLE
+						mario_grab_used_object(m)
+						object.oAction = 1
+						
+						TORNADO_GRABBED_DIST = 300
+						
+						if object.oSyncID ~= 0 then
+                network_send_object(object, true)
+            end
+					else
+					  TORNADO_GRABBED_DIST = 100
+					end
+					
         end
       end
     end
@@ -40,9 +69,9 @@ function mischa_tornado_loop(o)
       if obj then
         
         GRABBED_OBJ.goalPos = {
-          x = o.oPosX + (sins(TORNADO_GRAB_SPIN_TIMER*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(100 + 25*#GRABBED_OBJ.o)),
+          x = o.oPosX + (sins(TORNADO_GRAB_SPIN_TIMER*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(TORNADO_GRABBED_DIST + 25*#GRABBED_OBJ.o)),
           y = o.oPosY + 110 + math.random(-100, 25*#GRABBED_OBJ.o),
-          z = o.oPosZ + (coss(TORNADO_GRAB_SPIN_TIMER*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(100 + 25*#GRABBED_OBJ.o))
+          z = o.oPosZ + (coss(TORNADO_GRAB_SPIN_TIMER*MISCHA_GRAB_SPINATO + (65535/#GRABBED_OBJ.o)*c)*(TORNADO_GRABBED_DIST + 25*#GRABBED_OBJ.o))
         }
         
         obj.oVelY = 0
@@ -51,9 +80,16 @@ function mischa_tornado_loop(o)
             obj.oAction = 4
             table.remove(GRABBED_OBJ.o, c)
           end
-        obj.oPosX = lerp(obj.oPosX, GRABBED_OBJ.goalPos.x, MISCHA_GRAB_OBJECT_SLEERP)
-        obj.oPosY = lerp(obj.oPosY, GRABBED_OBJ.goalPos.y, MISCHA_GRAB_OBJECT_SLEERP/2)
-        obj.oPosZ = lerp(obj.oPosZ, GRABBED_OBJ.goalPos.z, MISCHA_GRAB_OBJECT_SLEERP)
+				if get_id_from_behavior(obj.behavior) ~= id_bhvBowser then	
+          obj.oPosX = lerp(obj.oPosX, GRABBED_OBJ.goalPos.x, MISCHA_GRAB_OBJECT_SLEERP)
+          obj.oPosY = lerp(obj.oPosY, GRABBED_OBJ.goalPos.y, MISCHA_GRAB_OBJECT_SLEERP/2)
+          obj.oPosZ = lerp(obj.oPosZ, GRABBED_OBJ.goalPos.z, MISCHA_GRAB_OBJECT_SLEERP)
+				else
+				  obj.oPosX = GRABBED_OBJ.goalPos.x
+					obj.oPosY = m.pos.y + 50
+				  obj.oPosZ = GRABBED_OBJ.goalPos.z
+				  obj.oFaceAngleYaw = atan2s(m.pos.z - obj.oPosZ, m.pos.x - obj.oPosX) + 0x8000
+				end
         
         if (obj.activeFlags == ACTIVE_FLAG_DEACTIVATED) then
           table.remove(GRABBED_OBJ.o, c)
