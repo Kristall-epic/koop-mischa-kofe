@@ -771,7 +771,7 @@ function act_mischa_kart(m)
 	
 	local decelForce = math.abs(sins(angle_diff(m.faceAngle.y, inertiaDir)))
 	
-	djui_chat_message_create(tostring(decelForce))
+	--djui_chat_message_create(tostring(decelForce))
 	
 	m.forwardVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
   
@@ -844,8 +844,8 @@ function act_mischa_kart(m)
 	  audio_stream_play(SOUND_KART_DRIFT, false, .25)
     m.particleFlags = m.particleFlags | PARTICLE_DIRT
 		
-		m.vel.x = m.vel.x + (sins(m.faceAngle.y)*KART_MISCHA_ACCEL)*decelForce
-		m.vel.z = m.vel.z + (coss(m.faceAngle.y)*KART_MISCHA_ACCEL)*decelForce
+		m.vel.x = m.vel.x + (sins(m.faceAngle.y)*KART_MISCHA_ACCEL)*decelForce - (sins(inertiaDir)*KART_MISCHA_ACCEL/2)*decelForce
+		m.vel.z = m.vel.z + (coss(m.faceAngle.y)*KART_MISCHA_ACCEL)*decelForce - (coss(inertiaDir)*KART_MISCHA_ACCEL/2)*decelForce
 		
   else
     audio_stream_stop(SOUND_KART_DRIFT)
@@ -853,11 +853,11 @@ function act_mischa_kart(m)
 
   local turnMag = (vel/(KART_FORWARD_MAX))*(math.abs(m.controller.rawStickX)/127)
   
-  if (m.controller.rawStickX < -64) then
+  if (m.controller.rawStickX < 0) then
     m.faceAngle.y = m.faceAngle.y + math.min((KART_TURN_VEL*turnMag), 0x2000)
   end
   
-  if (m.controller.rawStickX > 64) then
+  if (m.controller.rawStickX > 0) then
     m.faceAngle.y = m.faceAngle.y - math.max((KART_TURN_VEL*turnMag), -0x2000)
   end
   
