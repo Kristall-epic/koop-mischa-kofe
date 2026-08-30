@@ -26,7 +26,7 @@ function mischa_tornado_loop(o)
           audio_sample_play(SOUND_GRAB, m.pos, 1)
           table.insert(GRABBED_OBJ.o, object)
 					
-					if get_id_from_behavior(object.behavior) == id_bhvBowser then
+					if object and get_id_from_behavior(object.behavior) == id_bhvBowser then
 						m.actionState = TORNADO_STATE_BOWSER
 						m.interactObj = object
 						m.input = m.input | INPUT_INTERACT_OBJ_GRABBABLE

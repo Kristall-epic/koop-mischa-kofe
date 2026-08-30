@@ -769,6 +769,10 @@ function act_mischa_kart(m)
     air = true
   end
 	
+	local decelForce = math.abs(sins(angle_diff(m.faceAngle.y, inertiaDir)))
+	
+	djui_chat_message_create(tostring(decelForce))
+	
 	m.forwardVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
   
   m.marioObj.header.gfx.angle.x = approach_s16_asymptotic(m.marioObj.header.gfx.angle.x, math.clamp(MISCHA_MOVEMENT.y*-0x200, -0x8000, 0x8000), 8)
@@ -839,6 +843,10 @@ function act_mischa_kart(m)
     --  play_sound_with_freq_scale(SOUND_MOVING_LAVA_BURN, m.marioObj.header.gfx.cameraToObject, KART_FORWARD_MAX/vel)
 	  audio_stream_play(SOUND_KART_DRIFT, false, .25)
     m.particleFlags = m.particleFlags | PARTICLE_DIRT
+		
+		m.vel.x = m.vel.x + (sins(m.faceAngle.y)*KART_MISCHA_ACCEL)*decelForce
+		m.vel.z = m.vel.z + (coss(m.faceAngle.y)*KART_MISCHA_ACCEL)*decelForce
+		
   else
     audio_stream_stop(SOUND_KART_DRIFT)
   end
