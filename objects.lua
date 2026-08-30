@@ -1,17 +1,6 @@
 ACT_TORNADO_SPIN = 1
 ACT_TORNADO_DISAPPEAR = 2
 
-BOWSER_DEBUG = F3.allocate_debug_info()
-
-hook_event(HOOK_UPDATE, function()
-  m = gMarioStates[0]
-  local bowser = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvBowser)
-	
-	if bowser then
-	  F3.update_debug_info(BOWSER_DEBUG, "act: "..bowser.oAction)
-	end
-end)
-
 function mischa_tornado_init(o)
   o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE
   o.header.gfx.skipInViewCheck = true
@@ -38,7 +27,6 @@ function mischa_tornado_loop(o)
           table.insert(GRABBED_OBJ.o, object)
 					
 					if get_id_from_behavior(object.behavior) == id_bhvBowser then
-					  djui_chat_message_create("luigi look, it's from bowser!")
 						m.actionState = TORNADO_STATE_BOWSER
 						m.interactObj = object
 						m.input = m.input | INPUT_INTERACT_OBJ_GRABBABLE

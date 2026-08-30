@@ -773,6 +773,8 @@ function act_mischa_kart(m)
   
   m.marioObj.header.gfx.angle.x = approach_s16_asymptotic(m.marioObj.header.gfx.angle.x, math.clamp(MISCHA_MOVEMENT.y*-0x200, -0x8000, 0x8000), 8)
 	
+	m.faceAngle.x = MISCHA_MOVEMENT.y*10
+	
   set_mario_animation(m, MISCHA_ANIM_KAZOTSKY)
   set_anim_to_frame(m, (m.controller.rawStickX/127)*5 + 5)
   
