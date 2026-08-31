@@ -11,6 +11,12 @@ function update_life_icon_anim()
   end
 	
 	charSelect.character_edit(CT_MISCHA, nil, nil, nil, nil, nil, nil, get_cur_mischa_icon())
+	
+	if saveMischaScoreOnThisModAndNotCharacterSelect == true then
+	  mod_storage_save_integer("MISCHA_TETRIS_SCORE", score)
+		score = 0
+		saveMischaScoreOnThisModAndNotCharacterSelect = false
+	end
 end
 
 hook_event(HOOK_UPDATE, update_life_icon_anim)

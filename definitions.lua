@@ -87,7 +87,11 @@ mischaUI = {
       x = 0,
       y = 0
     }
-  }
+  },
+	tetris = {
+		x = 0,
+		y = 0
+	}
 }
 
 --variables
