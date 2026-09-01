@@ -5,13 +5,13 @@ function on_char_select_load()
   
 CT_MISCHA = charSelect.character_add(
         "Mischa Kofe",
-        {'KOFE BREAK!!!! Straight from 1998, Mischa Kofe is a character from the N64 Arcade-Platformer game "Kofe Break 64" which is about brewing as much coffee as possible under a time limit. His moveset is built from the ground up, which gives his moveset a more unique experience.'},
+        {'KOFE BREAK!!!!'},
         "Kristall",
         "aa0000", 
         E_MODEL_MISCHA,
         CT_MARIO, 
         nil,
-        0.9
+        1.5
     )
     
     anims_mischa = {
@@ -38,43 +38,55 @@ local PALETTE_MISCHA = {
   	[CAP] = "f73c2c", 
   	[EMBLEM] = "1c1c1c"
 }
-charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_MISCHA, "Mischa")
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_MISCHA, "Attire of Grace")
 
-local PALETTE_PURPLE = {
+local PALETTE_BLUE_ALLIANCE = {
+  	[PANTS] = "3a3334", 
+  	[SHIRT] = "4848ff", 
+  	[GLOVES] = "afafaf", 
+  	[SHOES] = "2b3ba2", 
+  	[HAIR] = "ffd959", 
+  	[SKIN] = "ffc796", 
+  	[CAP] = "4848ff", 
+  	[EMBLEM] = "ffe539"
+}
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_BLUE_ALLIANCE, "Blue Alliance")
+
+local PALETTE_DESTINY_FOREST = {
+  	[PANTS] = "13101e", 
+  	[SHIRT] = "85bd81", 
+  	[GLOVES] = "d2cabd", 
+  	[SHOES] = "729750", 
+  	[HAIR] = "790613", 
+  	[SKIN] = "ffb284", 
+  	[CAP] = "85bd81", 
+  	[EMBLEM] = "780c28"
+}
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_DESTINY_FOREST, "Destiny Forest")
+
+local PALETTE_EASTERN_CAVERNS = {
   	[PANTS] = "33394d", 
-  	[SHIRT] = "9975d4", 
-  	[GLOVES] = "9975d4", 
+  	[SHIRT] = "4d1677", 
+  	[GLOVES] = "916cca", 
   	[SHOES] = "271c45", 
   	[HAIR] = "090c09", 
   	[SKIN] = "ffdca8", 
   	[CAP] = "390e52", 
-  	[EMBLEM] = "916cca"
+  	[EMBLEM] = "2e1f42"
 }
---charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_PURPLE, "a")
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_EASTERN_CAVERNS, "Eastern Caverns")
 
-local PALETTE_LUKYAN = {
-  	[PANTS] = "586359", 
-  	[SHIRT] = "3cf32c", 
-  	[GLOVES] = "ffffff", 
-  	[SHOES] = "528119", 
-  	[HAIR] = "000000", 
-  	[SKIN] = "ffdecc", 
-  	[CAP] = "3cf72c", 
-  	[EMBLEM] = "1c1c1c"
-}
-charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_LUKYAN, "Lukyan")
-  
-local PALETTE_KINDNESS = {
- 	  [PANTS] = "ff44ff", 
+local PALETTE_FRIENDLY_COLLEAGUE = {
+  	[PANTS] = "ff44ff", 
   	[SHIRT] = "930090", 
   	[GLOVES] = "ff99ff", 
   	[SHOES] = "aa2c66", 
   	[HAIR] = "f365da", 
-  	[SKIN] = "c86b9d", 
-  	[CAP] = "ef2bea", 
-  	[EMBLEM] = "ef2bea"
+  	[SKIN] = "ffdbbf", 
+  	[CAP] = "930090", 
+  	[EMBLEM] = "812b8b"
 }
-charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_KINDNESS, "Kind")
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_FRIENDLY_COLLEAGUE, "Friendly Colleague")
 
 charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
     
@@ -89,7 +101,7 @@ charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
     
     charSelect.character_add_texture_replacement(CT_MISCHA, "texture_font_aliased", get_texture_info("font-red-guy"))
     
-		charSelect.character_add_menu_instrumental(CT_MISCHA, SOUND_THEME)
+		--charSelect.character_add_menu_instrumental(CT_MISCHA, SOUND_THEME)
 		
     moveset_mischa()
     

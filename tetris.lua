@@ -319,9 +319,7 @@ end
 function render()
   djui_hud_set_resolution(RESOLUTION_N64)
 	
-	if charSelect.character_get_current_number() ~= CT_MISCHA then return end
-	
-	if charSelect.is_options_open() ~= false then
+	if charSelect.is_options_open() ~= false or charSelect.character_get_current_number() ~= CT_MISCHA then
 	  mischaUI.tetris.y = lerp(mischaUI.tetris.y, 192, .1)
 	else
 	  mischaUI.tetris.y = lerp(mischaUI.tetris.y, 0, .1)
