@@ -314,7 +314,8 @@ function shape_loop()
 	
 end
 
-
+MISCHA_TETRIS_TEX = get_texture_info("mischa-tetris-piece")
+MISCHA_TETRIS_BG = get_texture_info("mischa-tetris-bg")
 
 function render()
   djui_hud_set_resolution(RESOLUTION_N64)
@@ -332,7 +333,7 @@ function render()
 	tileW = tileH
 	
   canvasX = djui_hud_get_screen_width()/2 + 32
-	canvasY = djui_hud_get_screen_height()/5 + tilesY*tileH + 12
+	canvasY = djui_hud_get_screen_height()/5 + tilesY*tileH + 12 - tileH
 	
 	djui_hud_set_color(8, 8, 8, 255)
 	
@@ -340,11 +341,17 @@ function render()
 	
 	djui_hud_reset_color()
 	
-	djui_hud_print_text("SCORE:\n"..score, canvasX - tileW*5 + tileW*(tilesX + 2) + 2, canvasY + tileH*4 + 2 + mischaUI.tetris.y, .2)
+	djui_hud_render_texture(MISCHA_TETRIS_BG, canvasX - tileW*5, canvasY + mischaUI.tetris.y + tileH*3, .35, .35)
 	
-	djui_hud_print_text("HIGHSCORE:\n"..highscore, canvasX - tileW*5 + tileW*(tilesX + 2) + 2, canvasY + tileH*8 + 2 + mischaUI.tetris.y, .2)
+	djui_hud_set_color(8, 8, 8, 255)
 	
-	djui_hud_render_rect(canvasX - tileW*5 + tileW*(tilesX + 2) + 2, canvasY + tileH*12 + 2 + mischaUI.tetris.y, tileW*6, tileH*6)
+	djui_hud_print_text(tostring(score), canvasX - tileW*5 + tileW*(tilesX + 3) + 2, canvasY + tileH*4 + 2 + mischaUI.tetris.y, .15)
+	
+	djui_hud_print_text(tostring(highscore), canvasX - tileW*5 + tileW*(tilesX + 3) + 2, canvasY + tileH*7 + 2 + mischaUI.tetris.y, .15)
+	
+	djui_hud_reset_color()
+	
+	--djui_hud_render_rect(canvasX - tileW*5 + tileW*(tilesX + 2) + 2, canvasY + tileH*12 + 2 + mischaUI.tetris.y, tileW*6, tileH*6)
 
   for x = 1, tilesX do
 	  for y = 1, tilesY do
@@ -352,8 +359,8 @@ function render()
 		  if canvas[y][x] ~= 0 then
 			  local color = get_tile_color(x, y)
 			  djui_hud_set_color(color.r, color.g, color.b, 255)
+				djui_hud_render_texture(MISCHA_TETRIS_TEX, canvasX - tileW*5 + tileW*x + 2, canvasY + tileH*y + 2 + mischaUI.tetris.y, tileW/MISCHA_TETRIS_TEX.width, tileH/MISCHA_TETRIS_TEX.height)
 			end
-				djui_hud_render_rect(canvasX - tileW*5 + tileW*x + 2, canvasY + tileH*y + 2 + mischaUI.tetris.y, tileW, tileH)
 			  djui_hud_set_color(255, 255, 255, 255)
 		end
 	end
@@ -364,7 +371,7 @@ function render()
 				  local color = actualColors[collision[curShape.shape][shapeY][shapeX]]
 				
 				  djui_hud_set_color(color[1], color[2], color[3], 255)
-					djui_hud_render_rect(canvasX - tileW*5 + tileW*(curShape.position.x + shapeX) + 2, canvasY + tileH*(curShape.position.y + shapeY) + 2 + mischaUI.tetris.y, tileW, tileH)
+					djui_hud_render_texture(MISCHA_TETRIS_TEX, canvasX - tileW*5 + tileW*(curShape.position.x + shapeX) + 2, canvasY + tileH*(curShape.position.y + shapeY) + 2 + mischaUI.tetris.y, tileW/MISCHA_TETRIS_TEX.width, tileH/MISCHA_TETRIS_TEX.height)
 					djui_hud_reset_color()
 				end
 				
@@ -372,7 +379,7 @@ function render()
 				  local color = actualColors[collision[nextShape][shapeY][shapeX]]
 					
 					djui_hud_set_color(color[1], color[2], color[3], 255)
-					djui_hud_render_rect(canvasX - tileW*5 + tileW*(tilesX + 2 + shapeX) + 2, canvasY + tileH*(12 + shapeY) + 2 + mischaUI.tetris.y, tileW, tileH)
+					djui_hud_render_texture(MISCHA_TETRIS_TEX, canvasX - tileW*5 + tileW*(tilesX + 3 + shapeX) + 2, canvasY + tileH*(13 + shapeY) + mischaUI.tetris.y, tileW/MISCHA_TETRIS_TEX.width, tileH/MISCHA_TETRIS_TEX.height)
 					djui_hud_reset_color()
 				end
 				

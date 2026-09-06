@@ -5,9 +5,7 @@ function act_mischa_walk(m)
   local step = perform_ground_step(m)
   m.vel.y = 0
   
-  m.actionState = m.actionState + 1
-  
-  local bouncy = sins(m.actionState*(3800))
+  local bouncy = sins((m.marioObj.header.gfx.animInfo.animFrame + 1)*(1650))
   
   m.marioObj.header.gfx.pos.y = m.pos.y + math.abs(bouncy)*(65) - 25
   
