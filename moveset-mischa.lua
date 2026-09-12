@@ -382,8 +382,8 @@ function act_mischa_tornado(m)
   local intendedX = (sins(ang) * (m.actionTimer/1.25))
   local intendedZ = (coss(ang) * (m.actionTimer/1.25))
 
-  m.vel.x = lerp(m.vel.x, intendedX, MISCHA_ACCEL_SLEERP)
-  m.vel.z = lerp(m.vel.z, intendedZ, MISCHA_ACCEL_SLEERP)
+  m.vel.x = lerp(m.vel.x, intendedX, MISCHA_ACCEL_SLEERP/1.5)
+  m.vel.z = lerp(m.vel.z, intendedZ, MISCHA_ACCEL_SLEERP/1.5)
   
   m.forwardVel = math.sqrt(m.vel.x^2 + m.vel.z^2)
   

@@ -170,15 +170,16 @@ function render_mischa_hud()
   end
   
   if (vis & HUD_DISPLAY_FLAG_COIN_COUNT ~= 0) then
+	
+	  local boings = math.min(m.numCoins, 130)
     
     mischaUI.kofe.pos.x = djui_hud_get_screen_width() - 48
     mischaUI.kofe.pos.y = 48
     
-    djui_hud_set_color(113, 75, 38, 255)
-    djui_hud_render_rect(mischaUI.kofe.pos.x, mischaUI.kofe.pos.y - 40*(math.min(m.numCoins/100, 1)), 40, 40*(math.min(m.numCoins/100, 1)))
-    djui_hud_reset_color()
+    --djui_hud_render_rect(mischaUI.kofe.pos.x, mischaUI.kofe.pos.y - 40*(math.min(m.numCoins/100, 1)), 40, 40*(math.min(m.numCoins/100, 1)))
+		djui_hud_render_texture_tile(TEX_MISCHA_UI, mischaUI.kofe.pos.x - 13, mischaUI.kofe.pos.y - 26*(boings/90), MISCHA_UI_SCALE*1.15, MISCHA_UI_SCALE*1.15, 128, 192 - 32*(boings/90), 64, 64)
     djui_hud_render_texture_tile(TEX_MISCHA_UI, mischaUI.kofe.pos.x - 13, mischaUI.kofe.pos.y - 43, MISCHA_UI_SCALE*1.15, MISCHA_UI_SCALE*1.15, 64, 128, 64, 64)
-    djui_hud_print_text(tostring(m.numCoins), mischaUI.kofe.pos.x + 16 - (djui_hud_measure_text(tostring(m.numCoins))*.35)/2, mischaUI.kofe.pos.y - 24, .35)
+    djui_hud_print_text(tostring(m.numCoins), mischaUI.kofe.pos.x + 8 - (djui_hud_measure_text(tostring(m.numCoins))*.5)/2, mischaUI.kofe.pos.y - 24, .5)
   end
   
   if (vis & HUD_DISPLAY_FLAGS_LIVES ~= 0) then

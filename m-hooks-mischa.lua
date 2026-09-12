@@ -17,6 +17,7 @@ function update_life_icon_anim()
 		score = 0
 		saveMischaScoreOnThisModAndNotCharacterSelect = false
 	end
+	
 end
 
 hook_event(HOOK_UPDATE, update_life_icon_anim)
@@ -465,6 +466,7 @@ function mischa_cheatcodes(m, msg)
 end
 
 function mischa_interact(m, o, intType)
+
   if intType & INTERACT_GRABBABLE ~= 0 then
     if m.action == ACT_MISCHA_SLAP then
       o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj) + 0x8000

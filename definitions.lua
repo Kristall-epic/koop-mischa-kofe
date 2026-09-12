@@ -243,10 +243,5 @@ end
   e.prevIntendedYaw = m.intendedYaw
   
   MOVING_VEL = math.sqrt(MISCHA_MOVEMENT.x^2 + MISCHA_MOVEMENT.y^2 + MISCHA_MOVEMENT.z^2)
-  
-	if obj_count_objects_with_behavior_id(id_bhvTuxiesMother) > 0 then
-	 local mom = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvTuxiesMother) 
-		djui_chat_message_create(tostring(mom.oDialogState.." response:"..mom.oDialogResponse))
-	end
 	
 end
