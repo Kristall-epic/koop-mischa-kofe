@@ -1,20 +1,32 @@
 E_MODEL_MISCHA = smlua_model_util_get_id("redguy_geo")
+-- used when mischa hits a wall while in tornado
 SOUND_BOUNCE_WALL = audio_sample_load("sproing.mp3")
+
+--unused... for now
 SOUND_THEME = audio_stream_load("anthem.ogg")
 SOUND_MOON_GET = audio_stream_load("moon-get.ogg")
 SOUND_WARP = audio_stream_load("mischa-warp.ogg")
-SOUND_BONK = audio_sample_load("mischa-bonk.ogg")
-SOUND_GRAB = audio_sample_load("mischa-tornado-grab.ogg")
 SOUND_SPIN = audio_stream_load("mischa-tornado-loop.ogg")
+SOUND_FEAR = audio_sample_load("mischa-near-bully.ogg")
 SOUND_RESTART = audio_stream_load("mischa-restart-level.ogg")
 SOUND_HEAVY_LAND = audio_sample_load("mischa-land-pound.ogg")
-SOUND_FEAR = audio_sample_load("mischa-near-bully.ogg")
+
+-- used when mischa lunges and crashes onto a wall
+SOUND_BONK = audio_sample_load("mischa-bonk.ogg")
+--used when mischa grabs an object with the tornado
+SOUND_GRAB = audio_sample_load("mischa-tornado-grab.ogg")
+--sounds used for the kart cheat code
 SOUND_KART_ENG = audio_stream_load("mischa-kart-eng.ogg")
 SOUND_KART_HONK = audio_sample_load("mischa-kart-honk.ogg")
 SOUND_KART_DRIFT = audio_stream_load("mischa-kart-drift.ogg")
 SOUND_KART_BRAKE = audio_stream_load("mischa-kart-brake.ogg")
+--ledgegrab sounds, fanfare is the funny looping sound that plays
+--slip plays when the ledgegrab is interrupted by a bad wall/floor
 MISCHA_FANFARE = audio_stream_load("mischa-fanfare.ogg")
 SOUND_LEDGE_SLIP = audio_sample_load("mischa-slip.ogg")
+--wall slap sounds, depends on wether the slap will make mischa gain height
+SOUND_GOOD_SLAP = audio_sample_load("mischa-slap-2.ogg")
+SOUND_BAD_SLAP = audio_sample_load("mischa-slap-1.ogg")
 
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")

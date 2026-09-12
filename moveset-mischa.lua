@@ -728,14 +728,15 @@ function act_mischa_slap_air(m)
     if (m.playerIndex == 0) then
         if (wallDiff < 0x6000) then
           MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + 1
+					audio_sample_play(SOUND_BAD_SLAP, m.pos, .45)
         else
           MISCHA_WALL_SLAPS = approach_s32(MISCHA_WALL_SLAPS, 1, 1, 1)
+					audio_sample_play(SOUND_GOOD_SLAP, m.pos, .45)
 					set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
         end
     end
     
     spawn_triangle_break_particles(16, 138, 2, 4)
-    play_sound(SOUND_GENERAL_POUND_ROCK, m.marioObj.header.gfx.cameraToObject)
      
     local wallAngle = atan2s(m.wall.normal.z, m.wall.normal.x)
     m.vel.x = m.vel.x + sins(wallAngle) * 75
