@@ -1,5 +1,5 @@
--- name: [CS] Mischa Kofe
--- description: KOFE BREAK!!!! Straight from 1998, Mischa Kofe is a character from the N64 Arcade-Platformer game "Kofe Break 64" which is about brewing as much coffee as possible under a time limit. His moveset is built from the ground up, which gives his moveset a more unique experience.
+-- name: [CS] \\#f73c2c\\Mischa Kofe
+-- description: KOFE BREAK!!!! Straight from 1998, Mischa Kofe is a character from the N64 Arcade-Platformer game "Kofe Break 64" which is about brewing as much coffee as possible under a time limit. His moveset is built from the ground up, giving him a more unique experience
 
 function on_char_select_load()
   
