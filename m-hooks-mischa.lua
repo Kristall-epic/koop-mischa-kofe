@@ -82,6 +82,10 @@ end
 
 function mischa_before_act(m, nextAct)
   MISCHA_COYOTE_TIMER = MISCHA_COYOTE
+	
+	if (nextAct == ACT_START_CROUCHING) then
+	  return 1
+	end
   
   if m.playerIndex == 0 and (nextAct & ACT_GROUP_AIRBORNE == 0) then
     MISCHA_WALL_SLAPS = 0
