@@ -615,6 +615,10 @@ function act_mischa_kick(m)
     set_mario_action(m, ACT_MISCHA_WALK, 0)
     m.actionTimer = 20
   end
+	
+	if step == AIR_STEP_LEFT_GROUND then
+	  set_mario_action(m, ACT_MISCHA_JUMP, 0)
+	end
   
 end
 
