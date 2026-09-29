@@ -175,12 +175,18 @@ function render_mischa_hud()
     
     mischaUI.kofe.pos.x = djui_hud_get_screen_width() - 48
     mischaUI.kofe.pos.y = 48
+		mischaUI.kofe.rot = lerp(mischaUI.kofe.rot, mischaUI.kofe.goalRot, .3)
+		mischaUI.kofe.goalRot = lerp(mischaUI.kofe.rot, 0, .1)
+		mischaUI.kofe.scl = lerp(mischaUI.kofe.scl, 1, .1)
     
     --djui_hud_render_rect(mischaUI.kofe.pos.x, mischaUI.kofe.pos.y - 40*(math.min(m.numCoins/100, 1)), 40, 40*(math.min(m.numCoins/100, 1)))
+		djui_hud_set_rotation(mischaUI.kofe.rot, .5, .5*(boings/90))
 		djui_hud_render_texture_tile(TEX_MISCHA_UI, mischaUI.kofe.pos.x - 13, mischaUI.kofe.pos.y - 26*(boings/90), MISCHA_UI_SCALE*1.15, MISCHA_UI_SCALE*1.15, 128, 192 - 32*(boings/90), 64, 64)
+		djui_hud_set_rotation(mischaUI.kofe.rot, .5, .5)
     djui_hud_render_texture_tile(TEX_MISCHA_UI, mischaUI.kofe.pos.x - 13, mischaUI.kofe.pos.y - 43, MISCHA_UI_SCALE*1.15, MISCHA_UI_SCALE*1.15, 64, 128, 64, 64)
-    djui_hud_print_text(tostring(m.numCoins), mischaUI.kofe.pos.x + 8 - (djui_hud_measure_text(tostring(m.numCoins))*.5)/2, mischaUI.kofe.pos.y - 24, .5)
-  end
+		djui_hud_set_rotation(0, 0, 0)
+    djui_hud_print_text(tostring(m.numCoins), mischaUI.kofe.pos.x + 8 - (djui_hud_measure_text(tostring(m.numCoins))*.5*mischaUI.kofe.scl)/2, mischaUI.kofe.pos.y - 16 - 8*mischaUI.kofe.scl, .5*mischaUI.kofe.scl)
+	end
   
   if (vis & HUD_DISPLAY_FLAGS_LIVES ~= 0) then
     

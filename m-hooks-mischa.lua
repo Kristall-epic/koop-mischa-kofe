@@ -471,6 +471,11 @@ end
 
 function mischa_interact(m, o, intType)
 
+  if intType & INTERACT_COIN ~= 0 and m.playerIndex == 0 then
+	  mischaUI.kofe.goalRot = 0x600*random_sign()
+		mischaUI.kofe.scl = mischaUI.kofe.scl + 0.2
+	end
+
   if intType & INTERACT_GRABBABLE ~= 0 then
     if m.action == ACT_MISCHA_SLAP then
       o.oFaceAngleYaw = obj_angle_to_object(o, m.marioObj) + 0x8000

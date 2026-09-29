@@ -98,7 +98,10 @@ mischaUI = {
     pos = {
       x = 0,
       y = 0
-    }
+    },
+		rot = 0,
+		goalRot = 0,
+		scl = 1
   },
 	tetris = {
 		x = 0,
