@@ -1,0 +1,13 @@
+extern const GeoLayout kofe_geo[];
+extern Lights1 kofe_kofe_lights;
+extern u8 kofe_mashinametal2_i8[];
+extern Vtx kofe_cup_mesh_layer_1_vtx_cull[8];
+extern Vtx kofe_cup_mesh_layer_1_vtx_0[92];
+extern Gfx kofe_cup_mesh_layer_1_tri_0[];
+extern Vtx kofe_cup_mesh_layer_1_vtx_1[7];
+extern Gfx kofe_cup_mesh_layer_1_tri_1[];
+extern Gfx mat_kofe_porceloing[];
+extern Gfx mat_revert_kofe_porceloing[];
+extern Gfx mat_kofe_kofe[];
+extern Gfx mat_revert_kofe_kofe[];
+extern Gfx kofe_cup_mesh_layer_1[];
