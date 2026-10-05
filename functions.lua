@@ -230,3 +230,15 @@ function get_cur_mischa_icon()
 	local icon = get_texture_info("mischa-icon"..MISCHA_LIVES_ANIM)
 	return icon
 end
+
+function geo_update_kofe_rot(n)
+  local o = geo_get_current_object()
+	
+	o.oFaceAngleYaw = o.oFaceAngleYaw + 0x600
+	o.header.gfx.angle.y = o.oFaceAngleYaw
+	o.oFaceAnglePitch = sins(get_global_timer()*1000)*0x2000
+	o.oFaceAngleRoll = 0
+	
+	obj_set_gfx_angle(o, o.oFaceAnglePitch, o.oFaceAngleYaw, o.oFaceAngleRoll)
+	
+end

@@ -1,4 +1,9 @@
 E_MODEL_MISCHA = smlua_model_util_get_id("redguy_geo")
+_G.E_MODEL_KOFE = smlua_model_util_get_id("kofe_geo")
+E_MODEL_RED_KOFE = smlua_model_util_get_id("red_kofe_geo")
+E_MODEL_BLUE_KOFE = smlua_model_util_get_id("blue_kofe_geo")
+E_MODEL_BIG_KOFE = smlua_model_util_get_id("big_kofe_geo")
+
 -- used when mischa hits a wall while in tornado
 SOUND_BOUNCE_WALL = audio_sample_load("sproing.mp3")
 
@@ -30,6 +35,7 @@ SOUND_BAD_SLAP = audio_sample_load("mischa-slap-1.ogg")
 
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")
+TEX_MISCHA_GRAFFITI = get_texture_info("mischa-graffiti")
 
 _G.MISCHA_ANIM_RUN = 800
 _G.MISCHA_ANIM_IDLE = 801

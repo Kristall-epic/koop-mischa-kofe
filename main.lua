@@ -103,6 +103,16 @@ charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
     
 		--charSelect.character_add_menu_instrumental(CT_MISCHA, SOUND_THEME)
 		
+		--charSelect.character_add_model_replacement(CT_MISCHA, E_MODEL_YELLOW_COIN, E_MODEL_KOFE, true)
+		--charSelect.character_add_model_replacement(CT_MISCHA, E_MODEL_YELLOW_COIN_NO_SHADOW, E_MODEL_KOFE, true)
+		
+		charSelect.character_add_model_replacement(CT_MISCHA, E_MODEL_RED_COIN, E_MODEL_RED_KOFE, true)
+		charSelect.character_add_model_replacement(CT_MISCHA, E_MODEL_RED_COIN_NO_SHADOW, E_MODEL_RED_KOFE, true)
+		
+		charSelect.character_add_model_replacement(CT_MISCHA, E_MODEL_STAR, E_MODEL_BIG_KOFE, true)
+		
+		charSelect.character_add_graffiti(CT_MISCHA, TEX_MISCHA_GRAFFITI)
+		
     moveset_mischa()
     
 end

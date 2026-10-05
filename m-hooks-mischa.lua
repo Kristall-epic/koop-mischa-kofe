@@ -522,6 +522,13 @@ function coyote_time_protect(m, class)
 
 end
 
+function set_kofe_model(o, model)
+  if get_id_from_behavior(o.behavior) == id_bhvYellowCoin then
+	  obj_set_model_extended(o, E_MODEL_KOFE)
+	end
+end
+
+
 function moveset_mischa()
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_UPDATE, mischa_update)
   charSelect.character_hook_moveset(CT_MISCHA, HOOK_BEFORE_SET_MARIO_ACTION, mischa_before_act)
@@ -540,5 +547,6 @@ function moveset_mischa()
  -- charSelect.character_hook_moveset(CT_MISCHA, HOOK_ON_PLAY_MODE_UPDATE, playmode)
   --hook_event(HOOK_ON_GEO_PROCESS, updateGeo)
 	charSelect.character_hook_moveset(CT_MISCHA, HOOK_MARIO_OVERRIDE_FLOOR_CLASS, coyote_time_protect)
+	--charSelect.character_hook_moveset(CT_MISCHA, HOOK_OBJECT_SET_MODEL, set_kofe_model)
 	
 	end
