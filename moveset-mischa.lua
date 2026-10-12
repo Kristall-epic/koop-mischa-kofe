@@ -696,10 +696,10 @@ function act_mischa_slap_air(m)
    local step = perform_air_step(m, 0)
    local prevWallangle
    
-   if (MISCHA_PREV_WALL and MISCHA_PREV_WALL.normal) then
-     prevWallangle = atan2s(MISCHA_PREV_WALL.normal.z, MISCHA_PREV_WALL.normal.x) 
+   if (m.wall) then
+     prevWallangle = MISCHA_PREV_WALLACE
     else
-       prevWallangle = 0x0
+       prevWallangle = m.faceAngle.y
     end
    
    m.actionTimer = m.actionTimer + 1
@@ -727,7 +727,6 @@ function act_mischa_slap_air(m)
   if (m.wall) then
     local curWallAngle = atan2s(m.wall.normal.z, m.wall.normal.x)
     local wallDiff = math.abs(curWallAngle - prevWallangle)
-    MISCHA_PREV_WALL = m.wall
     
     if (m.playerIndex == 0) then
         if (wallDiff < 0x6000) then
@@ -739,6 +738,8 @@ function act_mischa_slap_air(m)
 					set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
         end
     end
+		
+		MISCHA_PREV_WALLACE = curWallAngle
     
     spawn_triangle_break_particles(16, 138, 2, 4)
      
