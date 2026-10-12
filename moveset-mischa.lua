@@ -482,6 +482,12 @@ function act_mischa_slap(m)
       set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
     end
   end
+	
+	if m.wall then
+	  set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
+		m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
+		m.vel.y = 15
+	end
   
 end
 
