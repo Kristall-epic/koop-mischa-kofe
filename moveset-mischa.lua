@@ -669,6 +669,8 @@ function act_mischa_tornado_air(m)
     m.actionTimer = timer + math.abs(m.vel.y)
     m.vel.y = 0
   end
+	
+	m.vel.y = m.vel.y - .6
   
   if (m.wall) then
     spawn_triangle_break_particles(16, 138, 3, 4)
@@ -732,12 +734,31 @@ function act_mischa_slap_air(m)
   
   if (m.wall) then
     local curWallAngle = atan2s(m.wall.normal.z, m.wall.normal.x)
-    local wallDiff = math.abs(curWallAngle - prevWallangle)
+    local wallDiff = math.abs(angle_diff(MISCHA_PREV_WALLACE, curWallAngle))
+		
+		--djui_chat_message_create(tostring(wallDiff))
     
     if (m.playerIndex == 0) then
         if (wallDiff < 0x6000) then
           MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + 1
 					audio_sample_play(SOUND_BAD_SLAP, m.pos, .45)
+					
+					if not MISCHA_PREV_WALLSLAP_POS.x or MISCHA_WALL_SLAPS < 2 then
+					  MISCHA_PREV_WALLSLAP_POS = {
+						  x = m.pos.x,
+							y = m.pos.y,
+							z = m.pos.z
+						}
+					end
+					
+					local lastSlapDist = vec3f_hdist(MISCHA_PREV_WALLSLAP_POS, m.pos)
+					--make mischa fall down quicker if he tries to slap along a wall, doing that
+					--allows him to have too much air time
+					local slapDistPunish = (lastSlapDist > 200) and math.round(lastSlapDist/300) or 0
+					MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + slapDistPunish
+					
+					--djui_chat_message_create(tostring(slapDistPunish))
+					
         else
           MISCHA_WALL_SLAPS = approach_s32(MISCHA_WALL_SLAPS, 1, 1, 1)
 					audio_sample_play(SOUND_GOOD_SLAP, m.pos, .45)
@@ -746,6 +767,12 @@ function act_mischa_slap_air(m)
     end
 		
 		MISCHA_PREV_WALLACE = curWallAngle
+		
+		MISCHA_PREV_WALLSLAP_POS = {
+		  x = m.pos.x,
+			y = m.pos.y,
+			z = m.pos.z
+		}
     
     spawn_triangle_break_particles(16, 138, 2, 4)
      
