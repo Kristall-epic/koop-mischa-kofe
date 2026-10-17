@@ -96,7 +96,7 @@ hook_mario_action(ACT_MISCHA_WALK, act_mischa_walk)
 _G.ACT_MISCHA_JUMP = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_AIR)
 
 function act_mischa_jump(m)
-  local step = perform_air_step(m, 1)
+  local step = perform_air_step(m, 0)
   m.faceAngle.y = approach_s16_asymptotic(m.faceAngle.y, m.intendedYaw, 4)
   
   local intended_spd = (MISCHA_TOP_SPEED*MISCHA_AIR_DECEL)*CONTROL_STICK_MAG
@@ -165,7 +165,7 @@ _G.ACT_MISCHA_LUNGE = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_DIVING
 
 function act_mischa_lunge(m)
   
-  step = perform_air_step(m, 1)
+  step = perform_air_step(m, 0)
   
   if (step == AIR_STEP_LANDED) then
     set_mario_action(m, ACT_MISCHA_WALK, 0)
@@ -284,7 +284,7 @@ function act_mischa_bonk(m)
       end
     
   elseif (m.actionTimer > 15 and m.actionTimer < 25) then
-   perform_air_step(m, 1)
+   perform_air_step(m, 0)
    m.vel.x = sins(m.faceAngle.y) * -MISCHA_TOP_SPEED/2
     m.vel.z = coss(m.faceAngle.y) * -MISCHA_TOP_SPEED/2
    set_mario_animation(m, CHAR_ANIM_BACKWARD_SPINNING)
@@ -634,7 +634,7 @@ _G.ACT_MISCHA_TORNADO_AIR = allocate_mario_action(ACT_GROUP_AIRBORNE | ACT_FLAG_
 
 function act_mischa_tornado_air(m)
   
-  local step = perform_air_step(m, 1)
+  local step = perform_air_step(m, 0)
   
   local ang = (CONTROL_STICK_MAG > 0 and m.intendedYaw or atan2s(m.vel.z, m.vel.x))
   
