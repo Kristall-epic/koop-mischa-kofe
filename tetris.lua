@@ -178,7 +178,7 @@ function check_full_rows()
 			canvas[tilesY - row] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 			score = score + SCORE_PER_LINE
 		else
-		  for i = 1, 10 do
+		  for i = 1, tilesY do
 				canvas[(tilesY - row) + gertrude][i] = curRow[i]
 			end
 		end

@@ -78,6 +78,20 @@ function mischa_update(m)
   --He uses custom dialog system, hide vanilla one
   --set_dialog_override_pos(-200, -200)
 	
+	if obj_count_objects_with_behavior_id(id_bhvTuxiesMother) > 0 then
+	  local mom = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvTuxiesMother)
+		local baby = obj_get_nearest_object_with_behavior_id(m.marioObj, id_bhvSmallPenguin)
+		
+		--if there's a baby penguin object and the penguin is in mischa's tornado and mischa is less than 400 units away from the mom and the mom is
+		--in her default action and the baby isn't the other baby penguin
+		if baby and not obj_is_not_tornado_grabbed(baby) and mom.oDistanceToMario < 400 and mom.oAction == 0 and baby.oBehParams2ndByte == 0 then
+		  mom.oAction = 1 -- wow you found smol penguin
+			baby.oSmallPenguinUnk88 = 1
+      mom.prevObj = baby
+		end
+		
+	end
+	
 end
 
 function mischa_before_act(m, nextAct)
