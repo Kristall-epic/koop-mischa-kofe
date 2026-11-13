@@ -4,6 +4,8 @@ E_MODEL_RED_KOFE = smlua_model_util_get_id("red_kofe_geo")
 E_MODEL_BLUE_KOFE = smlua_model_util_get_id("blue_kofe_geo")
 E_MODEL_BIG_KOFE = smlua_model_util_get_id("big_kofe_geo")
 
+MISCHA_THEME = audio_stream_load("mischa-menu-theme.ogg")
+
 -- used when mischa hits a wall while in tornado
 SOUND_BOUNCE_WALL = audio_sample_load("sproing.mp3")
 
@@ -32,6 +34,8 @@ SOUND_LEDGE_SLIP = audio_sample_load("mischa-slip.ogg")
 --wall slap sounds, depends on wether the slap will make mischa gain height
 SOUND_GOOD_SLAP = audio_sample_load("mischa-slap-2.ogg")
 SOUND_BAD_SLAP = audio_sample_load("mischa-slap-1.ogg")
+--thnakhyuo kikiyama san :face_holding_back_tears:
+SOUND_MISCHA_STEP = audio_stream_load("mischa-step.ogg")
 
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")
@@ -44,6 +48,10 @@ _G.MISCHA_ANIM_SLAP_MOVE = 803
 _G.MISCHA_ANIM_TORNADO = 804
 _G.MISCHA_ANIM_KAZOTSKY = 805
 _G.MISCHA_ANIM_SLAP_POUND = 806
+_G.MISCHA_ANIM_JUMP = 807
+
+--if we do this maybe sound effects can have reverb and stuff
+_G.MISCHA_VOICE_STEP = 800
 
 --constants
 MISCHA_TOP_SPEED = 35

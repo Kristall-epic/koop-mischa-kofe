@@ -8,6 +8,16 @@ function act_mischa_walk(m)
   local bouncy = sins((m.marioObj.header.gfx.animInfo.animFrame + 1)*(1650))
   
   m.marioObj.header.gfx.pos.y = m.pos.y + math.abs(bouncy)*(65) - 25
+	
+	if (m.actionArg <= 8) then
+	  m.actionArg = 16
+	  audio_stream_set_frequency(SOUND_MISCHA_STEP, 1.2 + math.random(-4, 4)/10)
+	  audio_stream_play(SOUND_MISCHA_STEP, true, .4)
+		--spawn_non_sync_object(id_bhvSmoke, E_MODEL_YELLOW_SPHERE, m.pos.x + math.random(-50, 50), m.pos.y + 50, m.pos.z + math.random(-50, 50), nil)
+	  m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
+	end
+	
+	m.actionArg = m.actionArg - 1
   
   if step == GROUND_STEP_LEFT_GROUND then
     MISCHA_COYOTE_TIMER = MISCHA_COYOTE_TIMER - 1
@@ -83,7 +93,7 @@ function act_mischa_walk(m)
     m.particleFlags = m.particleFlags | PARTICLE_DUST
   end
   
-  if (math.abs(CONTROL_TURN_DIFF) > 0x2000) then
+  if (angle_diff(m.faceAngle.y, m.intendedYaw) > 0x2000) then
     play_sound(SOUND_MOVING_SLIDE_DOWN_POLE, m.pos)
   end
   

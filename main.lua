@@ -80,7 +80,7 @@ local PALETTE_FRIENDLY_COLLEAGUE = {
   	[PANTS] = "ff44ff", 
   	[SHIRT] = "930090", 
   	[GLOVES] = "ff99ff", 
-  	[SHOES] = "aa2c66", 
+  	[SHOES] = "aa2c66",
   	[HAIR] = "f365da", 
   	[SKIN] = "ffdbbf", 
   	[CAP] = "930090", 
@@ -91,11 +91,10 @@ charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_FRIENDLY_COLLEAG
 charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
     
     voice_mischa = {
-      [SOUND_ACTION_READ_SIGN] = SOUND_BOUNCE_WALL
-      
+      [800] = SOUND_MISCHA_STEP,
     }
     
-    charSelect.character_add_voice(E_MODEL_MISCHA, voice_mischa)
+   -- charSelect.character_add_voice(E_MODEL_MISCHA, voice_mischa)
     
     MISCHA_KOFECAM = charSelect.add_option("Camera of Mischa Kofe", 0, 1, {"Vanilla Cam", "Kofe Kamepa"}, true)
     
@@ -112,6 +111,8 @@ charSelect.character_add_animations(E_MODEL_MISCHA, anims_mischa)
 		--charSelect.character_add_model_replacement(CT_MISCHA, E_MODEL_STAR, E_MODEL_BIG_KOFE, true)
 		
 		charSelect.character_add_graffiti(CT_MISCHA, TEX_MISCHA_GRAFFITI)
+		
+		charSelect.character_add_menu_instrumental(CT_MISCHA, MISCHA_THEME)
 		
     moveset_mischa()
     
