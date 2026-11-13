@@ -57,6 +57,7 @@ function act_mischa_walk(m)
       end
       if (m.actionTimer == 0) then
       set_mario_action(m, ACT_MISCHA_TORNADO, 0)
+			audio_sample_play(SOUND_MISCHA_TORNADO, m.pos, .7)
       m.actionTimer = m.forwardVel*3
       end
     end
@@ -155,7 +156,8 @@ function act_mischa_jump(m)
   if (m.controller.buttonDown & Z_TRIG == 0 and m.controller.buttonDown & B_BUTTON ~= 0 and m.actionArg == 0 and m.actionTimer > 8) then
     m.vel.y = 15
     m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
-    play_sound(SOUND_ACTION_UNSTUCK_FROM_GROUND, m.pos)
+    audio_stream_play(SOUND_MISCHA_SLAP, false, .4)
+		audio_stream_play(SOUND_MISCHA_SLAP, false, .4)
     set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
   end
 	
@@ -421,7 +423,8 @@ function act_mischa_tornado(m)
     set_mario_action(m, ACT_MISCHA_TORNADO_AIR, 0)
     m.actionTimer = timer
     m.vel.y = 45 + 40/(math.max(m.forwardVel, 5))
-    play_sound(SOUND_ACTION_SIDE_FLIP_UNK, m.pos)
+    audio_stream_set_frequency(SOUND_MISCHA_JUMP, .9 + math.random(-4, 4)/10)
+		audio_stream_play(SOUND_MISCHA_JUMP, false, .7)
   end
   
   if (m.actionTimer == 100) then
@@ -477,7 +480,7 @@ function act_mischa_slap(m)
   if (m.controller.buttonDown & A_BUTTON ~= 0) then
     m.vel.y = 40
     m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
-    play_sound(SOUND_ACTION_UNSTUCK_FROM_GROUND, m.pos)
+    audio_stream_play(SOUND_MISCHA_SLAP, false, .4)
     set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
   end
   
@@ -698,7 +701,7 @@ function act_mischa_tornado_air(m)
 		else
       m.vel.y = 15
       m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
-      play_sound(SOUND_ACTION_UNSTUCK_FROM_GROUND, m.pos)
+      audio_stream_play(SOUND_MISCHA_SLAP, false, .4)
       set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
 		end
   end
@@ -751,7 +754,7 @@ function act_mischa_slap_air(m)
     if (m.playerIndex == 0) then
         if (wallDiff < 0x6000) then
           MISCHA_WALL_SLAPS = MISCHA_WALL_SLAPS + 1
-					audio_sample_play(SOUND_BAD_SLAP, m.pos, .45)
+					audio_sample_play(SOUND_BAD_SLAP, m.pos, .65)
 					
 					if not MISCHA_PREV_WALLSLAP_POS.x or MISCHA_WALL_SLAPS < 2 then
 					  MISCHA_PREV_WALLSLAP_POS = {
@@ -771,7 +774,7 @@ function act_mischa_slap_air(m)
 					
         else
           MISCHA_WALL_SLAPS = approach_s32(MISCHA_WALL_SLAPS, 1, 1, 1)
-					audio_sample_play(SOUND_GOOD_SLAP, m.pos, .45)
+					audio_sample_play(SOUND_GOOD_SLAP, m.pos, .65)
 					set_mario_action(m, ACT_MISCHA_SLAP_AIR, 0)
         end
     end

@@ -23,7 +23,7 @@ function mischa_tornado_loop(o)
         
         
         if dist < (250 + 25*#GRABBED_OBJ.o) and obj_is_not_tornado_grabbed(object) == true and (m.action == ACT_MISCHA_TORNADO or m.action == ACT_MISCHA_TORNADO_AIR) then
-          audio_sample_play(SOUND_GRAB, m.pos, 1)
+          audio_sample_play(SOUND_GRAB, m.pos, 1.2)
           table.insert(GRABBED_OBJ.o, object)
 					
 					if object and get_id_from_behavior(object.behavior) == id_bhvBowser then

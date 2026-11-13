@@ -119,10 +119,22 @@ function mischa_before_act(m, nextAct)
   if (nextAct == ACT_PUNCHING or nextAct == ACT_MOVE_PUNCHING) then
     return ACT_MISCHA_SLAP
   end
+	
+	if (nextAct == ACT_MISCHA_SLAP_AIR) then
+	  audio_stream_play(SOUND_MISCHA_SLAP, false, .4)
+	end
   
   if (nextAct == ACT_MISCHA_LUNGE) then
     camera_config_set_aggression(0)
   end
+	
+	if (nextAct == ACT_MISCHA_GROUND_SLAP_AIR) then
+	  audio_sample_play(SOUND_SLAPPOUND_START, m.pos, .7)
+	end
+	
+	if (nextAct == ACT_MISCHA_GROUND_SLAP_LAND) then
+	  audio_sample_play(SOUND_SLAPPOUND_LAND, m.pos, .7)
+	end
   
   if (nextAct == ACT_MISCHA_TORNADO or (nextAct == ACT_MISCHA_TORNADO_AIR and m.action ~= ACT_MISCHA_TORNADO)) then
     if (m.action == ACT_MISCHA_TORNADO_AIR) or m.playerIndex ~= 0 then return end

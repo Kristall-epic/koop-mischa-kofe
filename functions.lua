@@ -85,14 +85,18 @@ function mischa_jump(m)
   local jumpAdd = (MISCHA_MOVEMENT.y > 0) and (MISCHA_MOVEMENT.y) or 0 
   
       m.particleFlags = m.particleFlags | PARTICLE_MIST_CIRCLE
-      play_sound(SOUND_GENERAL_SWISH_AIR, m.marioObj.header.gfx.cameraToObject)
+      --play_sound(SOUND_GENERAL_SWISH_AIR, m.marioObj.header.gfx.cameraToObject)
+			audio_stream_set_frequency(SOUND_MISCHA_JUMP, .8 + math.random(-4, 4)/10)
+			audio_stream_play(SOUND_MISCHA_JUMP, false, .7)
       m.vel.y = MISCHA_JUMP_HEIGHT + jumpAdd
       set_mario_action(m, ACT_MISCHA_JUMP, 0) 
 end
 
 function mischa_lunge(m)
   m.particleFlags = m.particleFlags | PARTICLE_VERTICAL_STAR
-  play_sound(SOUND_GENERAL_BOING2, m.marioObj.header.gfx.cameraToObject)
+  --play_sound(SOUND_GENERAL_BOING2, m.marioObj.header.gfx.cameraToObject)
+	audio_stream_set_frequency(SOUND_MISCHA_LUNGE, .9 + math.random(-4, 4)/10)
+			audio_stream_play(SOUND_MISCHA_LUNGE, false, .7)
     mario_set_forward_vel(m, MISCHA_FORWARD_LUNGE_VEL + (math.abs(m.vel.y)/10))
     m.vel.y = MISCHA_JUMP_HEIGHT/2
     set_mario_action(m, ACT_MISCHA_LUNGE, 0)

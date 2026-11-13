@@ -21,7 +21,8 @@ SOUND_HEAVY_LAND = audio_sample_load("mischa-land-pound.ogg")
 -- used when mischa lunges and crashes onto a wall
 SOUND_BONK = audio_sample_load("mischa-bonk.ogg")
 --used when mischa grabs an object with the tornado
-SOUND_GRAB = audio_sample_load("mischa-tornado-grab.ogg")
+SOUND_GRAB = audio_sample_load("mischa-grab.ogg")
+SOUND_GRAB_FULL = audio_sample_load("mischa-tornado-grab.ogg")
 --sounds used for the kart cheat code
 SOUND_KART_ENG = audio_stream_load("mischa-kart-eng.ogg")
 SOUND_KART_HONK = audio_sample_load("mischa-kart-honk.ogg")
@@ -34,8 +35,17 @@ SOUND_LEDGE_SLIP = audio_sample_load("mischa-slip.ogg")
 --wall slap sounds, depends on wether the slap will make mischa gain height
 SOUND_GOOD_SLAP = audio_sample_load("mischa-slap-2.ogg")
 SOUND_BAD_SLAP = audio_sample_load("mischa-slap-1.ogg")
+--plays when air slapping
+SOUND_MISCHA_SLAP = audio_stream_load("mischa-slap.ogg")
+
+SOUND_SLAPPOUND_START = audio_sample_load("mischa-slappoundstart.ogg")
+SOUND_SLAPPOUND_LAND = audio_sample_load("mischa-slappoundland.ogg")
+
 --thnakhyuo kikiyama san :face_holding_back_tears:
 SOUND_MISCHA_STEP = audio_stream_load("mischa-step.ogg")
+SOUND_MISCHA_JUMP = audio_stream_load("mischa-jump.ogg")
+SOUND_MISCHA_LUNGE = audio_stream_load("mischa-lunge.ogg")
+SOUND_MISCHA_TORNADO = audio_sample_load("mischa-tornado-start.ogg")
 
 TEX_CURTAIN = get_texture_info("mischa-transition-screen")
 TEX_MISCHA_UI = get_texture_info("mischa-atlas")
