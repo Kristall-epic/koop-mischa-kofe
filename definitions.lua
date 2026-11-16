@@ -1,4 +1,4 @@
-E_MODEL_MISCHA = smlua_model_util_get_id("redguy_geo")
+E_MODEL_MISCHA = smlua_model_util_get_id("kofeman_geo")
 _G.E_MODEL_KOFE = smlua_model_util_get_id("kofe_geo")
 E_MODEL_RED_KOFE = smlua_model_util_get_id("red_kofe_geo")
 E_MODEL_BLUE_KOFE = smlua_model_util_get_id("blue_kofe_geo")
