@@ -2,10 +2,10 @@
 --unfortunately has to be regular hook and not cs hook, if not the icon will not move while not playing as mischa (-500 cool points)
 function update_life_icon_anim()
   MISCHA_LIVES_ANIM_TIMER = MISCHA_LIVES_ANIM_TIMER + 1
-  if (MISCHA_LIVES_ANIM_TIMER > 2) then
+  if (MISCHA_LIVES_ANIM_TIMER > 1) then
     MISCHA_LIVES_ANIM_TIMER = 0
     MISCHA_LIVES_ANIM = MISCHA_LIVES_ANIM + 1
-    if (MISCHA_LIVES_ANIM > 7) then
+    if (MISCHA_LIVES_ANIM > 11) then
       MISCHA_LIVES_ANIM = 0
     end
   end

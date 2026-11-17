@@ -28,17 +28,17 @@ CT_MISCHA = charSelect.character_add(
 		[0xD2] = "mischa_kazotsky"
   }
   
-local PALETTE_MISCHA = {
-  	[PANTS] = "b3b3b3", 
+local PALETTE_ATTIRE_OF_GRACE = {
+  	[PANTS] = "425974", 
   	[SHIRT] = "f73c2c", 
   	[GLOVES] = "ffffff", 
-  	[SHOES] = "522f19", 
+  	[SHOES] = "82000d", 
   	[HAIR] = "321e1e", 
   	[SKIN] = "ffdca8", 
   	[CAP] = "f73c2c", 
   	[EMBLEM] = "1c1c1c"
 }
-charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_MISCHA, "Attire of Grace")
+charSelect.character_add_palette_preset(E_MODEL_MISCHA, PALETTE_ATTIRE_OF_GRACE, "Attire of Grace")
 
 local PALETTE_BLUE_ALLIANCE = {
   	[PANTS] = "3a3334", 
