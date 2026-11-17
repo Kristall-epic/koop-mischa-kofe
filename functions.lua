@@ -135,10 +135,10 @@ function string_to_lines(str, length)
   return result
 end
 
-function obj_is_not_tornado_grabbed(o)
+function obj_is_not_tornado_grabbed(o, id)
   
   for i = 1, MISCHA_GRAB_MAX_OBJECTS do
-    if (o == GRABBED_OBJ.o[i]) then
+    if (o == tornadoGrabs[id].o[i]) then
       return false
     end
   end

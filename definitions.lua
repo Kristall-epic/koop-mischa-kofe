@@ -143,6 +143,7 @@ TORNADO_GRAB_SPIN_TIMER = 0
 TORNADO_GRAB_SPIN_ACCEL = 1
 MISCHA_TURNING_ANGLE = 0x0
 CONTROL_STICK_MAG = 0
+CONTROL_TURN_DIFF = 0
 CONTROL_SPIN_DIFF = 0x0
 MISCHA_POS_X = 0
 MISCHA_POS_Y = 0
@@ -180,14 +181,7 @@ MISCHA_MOVEMENT = {
   z = 0
 }
 MOVING_VEL = 0
-GRABBED_OBJ = {
-  o = {},
-  goalPos = {
-    x = 0,
-    y = 0,
-    z = 0
-  }
-}
+
 CUR_PRESSED = {
   [A_BUTTON] = 0,
   [B_BUTTON] = 0,
@@ -205,6 +199,7 @@ DOUBLE_TAP_TIMER = 10
 MOVING_VEL = 0
 --extra states
 gMischaStates = {}
+tornadoGrabs = {}
 for i = 0, (MAX_PLAYERS-1) do
   gMischaStates[i] = {}
   local m = gMarioStates[i]
@@ -215,6 +210,15 @@ for i = 0, (MAX_PLAYERS-1) do
     z = 0
   }
   mischa.prevIntendedYaw = 0x0
+	
+	tornadoGrabs[i] = {
+	  o = {},
+    goalPos = {
+      x = 0,
+      y = 0,
+      z = 0
+    }
+	}
 end
 
 function update_variables(m)

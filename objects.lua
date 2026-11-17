@@ -13,7 +13,15 @@ function mischa_tornado_init(o)
 end
 
 function mischa_tornado_loop(o)
-  local m = gMarioStates[0]
+  
+	--comments so i don't forget and ruin everything
+	
+	--gets the local index from global, the id of a player could not be 0 for someone else
+  local id = network_local_index_from_global(o.oBehParams2ndByte)
+
+  local m = gMarioStates[id]
+	
+	local GRABBED_OBJ = tornadoGrabs[id]
   
   if (#GRABBED_OBJ.o < MISCHA_GRAB_MAX_OBJECTS) then
     for i = 0, id_bhv_max_count do 
@@ -21,8 +29,7 @@ function mischa_tornado_loop(o)
       if object and (obj_is_grabbable(object)) or MISCHA_TORNADO_GRABBABLES[i] then
         local dist = dist_between_objects(object, o)
         
-        
-        if dist < (250 + 25*#GRABBED_OBJ.o) and obj_is_not_tornado_grabbed(object) == true and (m.action == ACT_MISCHA_TORNADO or m.action == ACT_MISCHA_TORNADO_AIR) then
+        if dist < (250 + 25*#GRABBED_OBJ.o) and obj_is_not_tornado_grabbed(object, id) == true and (m.action == ACT_MISCHA_TORNADO or m.action == ACT_MISCHA_TORNADO_AIR) then
           audio_sample_play(SOUND_GRAB, m.pos, 1.2)
           table.insert(GRABBED_OBJ.o, object)
 					
@@ -49,8 +56,9 @@ function mischa_tornado_loop(o)
 	
 	TORNADO_GRAB_SPIN_ACCEL = lerp(TORNADO_GRAB_SPIN_ACCEL, TORNADO_OBJ_SPIN_DIR, .3)
 	
-	TORNADO_GRAB_SPIN_TIMER = TORNADO_GRAB_SPIN_TIMER + TORNADO_GRAB_SPIN_ACCEL
-	
+	if m.playerIndex == network_global_index_from_local(0) then
+	  TORNADO_GRAB_SPIN_TIMER = TORNADO_GRAB_SPIN_TIMER + TORNADO_GRAB_SPIN_ACCEL
+	end
     
     for c = 1, MISCHA_GRAB_MAX_OBJECTS do
       local obj = GRABBED_OBJ.o[c]
