@@ -2,10 +2,10 @@
 --unfortunately has to be regular hook and not cs hook, if not the icon will not move while not playing as mischa (-500 cool points)
 function update_life_icon_anim()
   MISCHA_LIVES_ANIM_TIMER = MISCHA_LIVES_ANIM_TIMER + 1
-  if (MISCHA_LIVES_ANIM_TIMER > 2) then
+  if (MISCHA_LIVES_ANIM_TIMER > 1) then
     MISCHA_LIVES_ANIM_TIMER = 0
     MISCHA_LIVES_ANIM = MISCHA_LIVES_ANIM + 1
-    if (MISCHA_LIVES_ANIM > 7) then
+    if (MISCHA_LIVES_ANIM > 11) then
       MISCHA_LIVES_ANIM = 0
     end
   end
@@ -84,7 +84,7 @@ function mischa_update(m)
 		
 		--if there's a baby penguin object and the penguin is in mischa's tornado and mischa is less than 400 units away from the mom and the mom is
 		--in her default action and the baby isn't the other baby penguin
-		if baby and not obj_is_not_tornado_grabbed(baby) and mom.oDistanceToMario < 400 and mom.oAction == 0 and baby.oBehParams2ndByte == 0 then
+		if baby and not obj_is_not_tornado_grabbed(baby, 0) and mom.oDistanceToMario < 400 and mom.oAction == 0 and baby.oBehParams2ndByte == 0 then
 		  mom.oAction = 1 -- wow you found smol penguin
 			baby.oSmallPenguinUnk88 = 1
       mom.prevObj = baby
@@ -136,10 +136,12 @@ function mischa_before_act(m, nextAct)
 	  audio_sample_play(SOUND_SLAPPOUND_LAND, m.pos, .7)
 	end
   
-  if (nextAct == ACT_MISCHA_TORNADO or (nextAct == ACT_MISCHA_TORNADO_AIR and m.action ~= ACT_MISCHA_TORNADO)) then
-    if (m.action == ACT_MISCHA_TORNADO_AIR) or m.playerIndex ~= 0 then return end
+  if ((nextAct == ACT_MISCHA_TORNADO and m.action ~= ACT_MISCHA_TORNADO_AIR) or (nextAct == ACT_MISCHA_TORNADO_AIR and m.action ~= ACT_MISCHA_TORNADO)) then
+		if m.playerIndex ~= 0 then return end
 		
-    local tornado = spawn_non_sync_object(id_bhvMischaTornado, E_MODEL_DL_WHIRLPOOL, m.pos.x, m.pos.y, m.pos.z, function(o)
+    local tornado = spawn_sync_object(id_bhvMischaTornado, E_MODEL_DL_WHIRLPOOL, m.pos.x, m.pos.y, m.pos.z, function(o)
+		o.oBehParams2ndByte = network_global_index_from_local(m.playerIndex)
+		network_send_object(o, true)
       end)
   end
   
@@ -427,8 +429,7 @@ end
 
 function mischa_warp()
   MISCHA_PREV_WALL = nil
-	GRABBED_OBJ.o = {}
-  
+	tornadoGrabs[network_global_index_from_local(0)].o = {}
 end
 
 function mischa_dialog(id)

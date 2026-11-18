@@ -335,10 +335,10 @@ function act_mischa_tornado(m)
 		
 		if m.controller.buttonReleased & B_BUTTON ~= 0 then
 			
-			for c, obj in pairs(GRABBED_OBJ.o) do
+			for c, obj in pairs(tornadoGrabs[network_global_index_from_local(m.playerIndex)].o) do
 			  if obj == o then
 				  set_override_fov(0)
-				  table.remove(GRABBED_OBJ.o, c)
+				  table.remove(tornadoGrabs[network_global_index_from_local(m.playerIndex)].o, c)
 					m.actionState = TORNADO_STATE_REGULAR
 					o.oForwardVel = 40 + m.actionTimer
 					o.oVelY = 30 + m.actionTimer*.75
